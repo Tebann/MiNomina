@@ -218,7 +218,7 @@ body {
   width: 100%;
   margin: 10px 0;
   padding: 8px;
-  background: #005aa7;
+  background: #01161e;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -228,7 +228,8 @@ body {
   transition: background 0.2s;
 }
 .btn-word:hover {
-  background: #004080;
+  background: #c2ffd9;
+  color: #01161e
 }
 
 
