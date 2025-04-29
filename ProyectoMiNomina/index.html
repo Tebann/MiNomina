@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mi Nómina</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <h1 class="title">Mi Nómina</h1>
+  <button id="btnGenerarWord" class="btn-word">Generar Cuenta de Cobro</button>
+  <div class="curriculum-container" id="curriculum">
+
+    <!-- Columna 1: Resumen + Registrar día -->
+    <div class="column">
+      <div class="card-container">
+        <div class="column-header">
+          Resumen del mes –
+          <button id="prevMonth">&lt;</button>
+          <span id="currentMonth"></span>
+          <button id="nextMonth">&gt;</button>
+        </div>
+        <div class="card card-ingresos">
+          <div class="card-name">Ingresos</div>
+          <div class="card-name">$<span id="ingresosMes">0</span></div>
+          <div class="card-code" id="diasTrabajadosCode">0 días trabajados</div>
+        </div>
+        <div class="card card-gastos">
+          <div class="card-name">Gastos</div>
+          <div class="card-name">$<span id="gastosMes">0</span></div>
+          <div class="card-code" id="gastosRegistradosCode">0 gastos registrados</div>
+        </div>
+        <div class="card card-balance">
+          <div class="card-name">Balance</div>
+          <div class="card-name">$<span id="balanceMes">0</span></div>
+          <div class="card-code" id="balanceCode">Ahorro</div>
+        </div>
+      </div>
+      <div class="card-container">
+        <div class="column-header">Registrar día trabajado</div>
+        <div class="card card-form">
+          <form id="registroForm">
+            <label>Fecha:
+              <input type="date" id="fecha" required />
+            </label>
+            <label>Tipo de día:
+              <select id="tipoDia" required>
+                <option value="medio">Medio tiempo</option>
+                <option value="completo">Tiempo completo</option>
+              </select>
+            </label>
+            <label>
+              <input type="checkbox" id="esFestivo" />
+              Día festivo
+            </label>
+            <button type="submit">Registrar día</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Columna 2: Calendario + Días trabajados recientes -->
+    <div class="column">
+      <div class="card-container">
+        <div class="column-header">Calendario</div>
+        <div class="calendario"></div>
+      </div>
+      <div class="card-container">
+        <div class="column-header">Días Trabajados Recientes</div>
+        <div id="listaDiasTrabajados"></div>
+      </div>
+    </div>
+
+    <!-- Columna 3: Registrar Gastos + Listado de Gastos -->
+    <div class="column">
+      <div class="card-container">
+        <div class="column-header">Registrar Gastos</div>
+        <div class="card card-form">
+          <form id="registroGastoForm">
+            <label>Concepto:
+              <input type="text" id="conceptoGasto" required />
+            </label>
+            <label>Valor:
+              <input type="number" id="valorGasto" min="0.01" step="0.01" required />
+            </label>
+            <button type="submit">Registrar Gasto</button>
+          </form>
+        </div>
+      </div>
+      <div class="card-container">
+        <div class="column-header">Gastos del Mes</div>
+        <div id="listaGastos"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Modal genérico -->
+  <div id="modalOverlay" class="modal-overlay">
+    <div class="modal">
+      <p id="modalText"></p>
+      <div class="modal-buttons">
+        <button id="modalYes">Sí</button>
+        <button id="modalNo">No</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js" defer></script>
+</body>
+</html>
