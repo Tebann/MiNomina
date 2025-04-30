@@ -16,7 +16,14 @@
 
 body {
   background-color: var(--bg-colorl);
-  padding: 20px;
+}
+
+.father{
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-height: 110vh;
+  overflow-y: hidden;
 }
 
 .title {
@@ -27,7 +34,6 @@ body {
 
 .curriculum-container {
   display: flex;
-  overflow-x: auto;
   padding: 20px 0;
 }
 
@@ -268,3 +274,19 @@ body {
   color: #01161e
 }
 
+
+/* ids para especificos */
+#cardDiasTrabajados{
+  min-height: 370px;
+  overflow-y: auto;
+}
+#listaDiasTrabajados{
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+/* scrikk bar style */
+::-webkit-scrollbar {
+  width: 0px;
+  background-color: #d70000;
+}

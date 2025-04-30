@@ -8,14 +8,14 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-  <h1 class="title">Mi Nómina</h1>
+  <section class="father">
+    <h1 class="title">Mi Nómina</h1>
   
   <div class="curriculum-container" id="curriculum">
 
     <!-- Columna 1: Resumen + Registrar día -->
     <div class="column">
       <div class="card-container">
-        <button id="btnGenerarWord" class="btn-word">Generar Cuenta de Cobro</button>
         <div class="column-header">
           Resumen del mes –
           <button id="prevMonth">&lt;</button>
@@ -37,6 +37,7 @@
           <div class="card-name">$<span id="balanceMes">0</span></div>
           <div class="card-code" id="balanceCode">Ahorro</div>
         </div>
+        <button id="btnGenerarWord" class="btn-word">Generar Cuenta de Cobro</button>
       </div>
       <div class="card-container">
         <div class="column-header">Registrar día trabajado</div>
@@ -67,7 +68,7 @@
         <div class="column-header">Calendario</div>
         <div class="calendario"></div>
       </div>
-      <div class="card-container">
+      <div class="card-container" id="cardDiasTrabajados">
         <div class="column-header">Días Trabajados Recientes</div>
         <div id="listaDiasTrabajados"></div>
       </div>
@@ -109,5 +110,8 @@
   </div>
 
   <script src="js/app.js" defer></script>
+
+  </section>
+  
 </body>
 </html>
