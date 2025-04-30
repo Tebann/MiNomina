@@ -145,21 +145,22 @@
     const registros = JSON.parse(localStorage.getItem('diasTrabajados') || '[]')
       .filter(r => {
         const d = parseLocalDate(r.fecha);
-        return d.getFullYear() === selectedYear && d.getMonth()    === selectedMonth;
+        return d.getFullYear() === selectedYear && d.getMonth() === selectedMonth;
       })
-      .sort((a, b) => parseLocalDate(b.fecha) - parseLocalDate(a.fecha));
-  
+      .sort((a, b) => parseLocalDate(b.fecha) - parseLocalDate(a.fecha))
+      
+    
     listaDiasEl.innerHTML = '';
     registros.forEach(r => {
       const card = document.createElement('div');
       card.className = 'card';
-  
+
       const fechaFormateada = formatDate(r.fecha);
       const pagoStr = Math.round(r.total).toLocaleString('en-US');
-  
+
       const badgeClass = r.festivo ? 'festivo' : '';
       const badgeText  = r.festivo ? 'Festivo' : '';
-  
+
       card.innerHTML = `
       <div class="card-content">
         <div class="card-name">
@@ -170,7 +171,7 @@
       </div>
       <button class="btn-delete">Eliminar?</button>
     `;
-  
+
       card.querySelector('.btn-delete').addEventListener('click', () => {
         showConfirm(
           `¿Eliminar día ${fechaFormateada}?`,
@@ -182,7 +183,7 @@
           }
         );
       });
-  
+
       listaDiasEl.appendChild(card);
     });
   }
@@ -199,17 +200,42 @@
       card.className = 'card';
       const valorStr = Number(g.valor).toLocaleString('en-US');
       
+      const badgeClass = g.pagado ? 'pagado' : '';
+      const badgeText = g.pagado ? 'Pagado' : '';
+      
       card.innerHTML = `
       <div class="card-content">
         <div class="card-name">
           ${g.concepto}
+          <span class="badge ${badgeClass}">${badgeText}</span>
         </div>
-      <div>$${valorStr}</div>
+        <div>$${valorStr}</div>
       </div>
-      <button class="btn-delete">Eliminar? </button>
+      <div class="card-actions">
+        ${!g.pagado ? `
+          <button class="btn-pay">Pagado?</button>
+        ` : ''}
+        <button class="btn-delete">Eliminar?</button>
+      </div>
     `;
 
       listaGastosEl.appendChild(card);
+
+      if (!g.pagado) {
+        card.querySelector('.btn-pay')
+          .addEventListener('click', () => {
+            showConfirm(
+              `¿Marcar como pagado "${g.concepto}"?`,
+              () => {
+                const gastos = JSON.parse(localStorage.getItem('gastos')||'[]');
+                gastos[g.idx].pagado = true;
+                localStorage.setItem('gastos', JSON.stringify(gastos));
+                updateAll();
+              }
+            );
+          });
+      }
+
       card.querySelector('.btn-delete')
         .addEventListener('click', () => {
           showConfirm(

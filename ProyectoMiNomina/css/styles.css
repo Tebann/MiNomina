@@ -166,6 +166,11 @@ body {
   background: var(--color-optionall);
 }
 
+.badge.pagado {
+  background: var(--color-ingresosl);
+  color: var(--color-optionall)
+}
+
 .card {
   position: relative;                /* para posicionar el botón */
   overflow: hidden;
@@ -179,7 +184,7 @@ body {
 /* Botón Eliminar estilizado */
 .btn-delete {
   position: absolute;
-  top: 50%; left: 50%;
+  top: 50%; left: 84%;
   transform: translate(-50%, -50%) scale(0.9);
   opacity: 0;
   padding: 8px 16px;
@@ -198,16 +203,46 @@ body {
   z-index: 2;
 }
 
-/* Mostrar y animar al hacer hover en la card */
-.card:hover .btn-delete {
+/* Botón Pay estilizado */
+.btn-pay {
+  position: absolute;
+  top: 50%; left: 57%;
+  transform: translate(-50%, -50%) scale(0.9);
+  opacity: 0;
+  padding: 8px 16px;
+  background: var(--color-ingresosl);
+  color: #01161e;
+  border: none;
+  border-radius: 12px; 
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: 
+    opacity 0.3s ease, 
+    transform 0.2s ease, 
+    background 0.2s ease;
+  z-index: 2;
+}
+
+/* Mostrar y animar al hacer hover */
+.card:hover .btn-delete,
+.card:hover .btn-pay {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
 }
 
-/* Efecto hover en el botón */
-.btn-delete:hover {
-  background: #d53030;  /* un rojo ligeramente más oscuro */
+/* Efecto hover en delete */
+.btn-delete:hover{
+  background: #d53030;
 }
+
+/* Efecto hover en pay */
+.btn-pay:hover {
+  background: #82d3a1;
+  color: white;
+}
+
 /* Efecto de desenfoque en el contenido de la tarjeta */
 .card:hover .card-content {
   filter: blur(2px);
@@ -227,9 +262,9 @@ body {
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   transition: background 0.2s;
 }
+
 .btn-word:hover {
   background: #c2ffd9;
   color: #01161e
 }
-
 
