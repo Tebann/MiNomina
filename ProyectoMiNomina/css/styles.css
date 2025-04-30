@@ -77,17 +77,41 @@ body {
   background-color: #f9f6ef;
   border-radius: 8px;
   padding: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+  transition: transform 0.3s;
+}
+
+.card-list {
+  background-color: #f9f6ef;
+  border-radius: 8px;
+  padding: 12px;
   margin-bottom: 15px;
   box-shadow: 0 3px 8px rgba(0,0,0,0.08);
   transition: transform 0.3s;
 }
+
+.card-list:hover {
+  transform: translateY(-3px);
+}
+
 .card:hover {
   transform: translateY(-3px);
 }
 
-.card-ingresos { background-color: var(--color-ingresosl); }
-.card-gastos   { background-color: var(--color-gastosl); }
-.card-balance  { background-color: var(--color-balancel); }
+.card-ingresos { 
+  background-color: var(--color-ingresosl);
+  margin-bottom: 15px; 
+}
+
+.card-gastos   { 
+  background-color: var(--color-gastosl);
+  margin-bottom: 15px; 
+}
+
+.card-balance  { 
+  background-color: var(--color-balancel);
+  margin-bottom: 15px;
+}
 
 .card-name {
   font-size: 1rem;
@@ -102,19 +126,21 @@ body {
 .card-form form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
 }
 .card-form input,
-.card-form select,
-.card-form button {
+.card-form select {
   padding: 8px;
-  border-radius: 4px;
+  border-radius: 6px;
   border: 1px solid #ccc;
+  margin-bottom: 15px;
 }
 .card-form button {
   background: #101113;
   color: #fff;
   cursor: pointer;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
 }
 
 /* Calendario */
@@ -187,6 +213,7 @@ body {
   transition: filter 0.3s;
 }
 
+/* BOTONES */
 /* Botón Eliminar estilizado */
 .btn-delete {
   position: absolute;
@@ -238,6 +265,12 @@ body {
   transform: translate(-50%, -50%) scale(1);
 }
 
+.card-list:hover .btn-delete,
+.card-list:hover .btn-pay {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
 /* Efecto hover en delete */
 .btn-delete:hover{
   background: #d53030;
@@ -254,17 +287,21 @@ body {
   filter: blur(2px);
 }
 
+/* Efecto de desenfoque en el contenido de la tarjeta */
+.card-list:hover .card-content {
+  filter: blur(2px);
+}
+
 .btn-word {
   display: block;
   width: 100%;
-  margin: 10px 0;
   padding: 8px;
   background: #01161e;
   color: #fff;
   border: none;
   border-radius: 6px;
   font-weight: 600;
-  cursor: pointer;
+  cursor: pointer;  
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   transition: background 0.2s;
 }
@@ -274,19 +311,26 @@ body {
   color: #01161e
 }
 
-
 /* ids para especificos */
 #cardDiasTrabajados{
-  min-height: 370px;
+  min-height: 354px;
   overflow-y: auto;
 }
-#listaDiasTrabajados{
-  max-height: 260px;
+
+#cardGastosdelMes{
+  min-height: 461px;
   overflow-y: auto;
+}
+
+#listaDiasTrabajados{
+  max-height: 200px;
+}
+
+#listaGastos{
+  max-height: 200px;
 }
 
 /* scrikk bar style */
 ::-webkit-scrollbar {
   width: 0px;
-  background-color: #d70000;
 }

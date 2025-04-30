@@ -153,7 +153,7 @@
     listaDiasEl.innerHTML = '';
     registros.forEach(r => {
       const card = document.createElement('div');
-      card.className = 'card';
+      card.className = 'card-list';
 
       const fechaFormateada = formatDate(r.fecha);
       const pagoStr = Math.round(r.total).toLocaleString('en-US');
@@ -197,7 +197,7 @@
     listaGastosEl.innerHTML = '';
     all.forEach(g => {
       const card = document.createElement('div');
-      card.className = 'card';
+      card.className = 'card-list';
       const valorStr = Number(g.valor).toLocaleString('en-US');
       
       const badgeClass = g.pagado ? 'pagado' : '';
