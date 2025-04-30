@@ -110,6 +110,7 @@
     return all
       .filter(g => g.month===mesKey)
       .reduce((sum,g)=> sum + g.valor, 0);
+      
   }
 
   // ——— Renderizado ———
