@@ -84,6 +84,25 @@ body {
   padding: 0 8px;
 }
 
+.card {
+  background-color: #f9f6ef;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+  transition: transform 0.3s;
+}
+
+.login-container {
+  background-color: var(--column-headerl);
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  border: 2px solid #000;
+  max-width: 400px;
+  margin: 30vh auto 0;
+  align-items: center;
+}
+
 .card-container {
   background-color: var(--column-headerl);
   padding: 15px;
@@ -91,14 +110,6 @@ body {
   margin-bottom: 15px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   border: 2px solid #000;
-}
-
-.card {
-  background-color: #f9f6ef;
-  border-radius: 8px;
-  padding: 12px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
-  transition: transform 0.3s;
 }
 
 .card-list {
@@ -143,6 +154,31 @@ body {
 }
 
 /* Formularios */
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-form input,
+.card-form select{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.login-form button {
+  background: #101113;
+  color: #fff;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
 .card-form form {
   display: flex;
   flex-direction: column;
@@ -235,6 +271,7 @@ body {
 
 /* BOTONES */
 /* Botón Eliminar estilizado */
+
 .btn-delete {
   position: absolute;
   top: 50%; left: 84%;
@@ -354,3 +391,12 @@ body {
 ::-webkit-scrollbar {
   width: 0px;
 }
+
+.login-logo { 
+  display: block;
+  margin: 0 auto auto;
+  max-width: 100px;
+  height: auto;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3)); /* sombra que sigue la silueta */
+}
+

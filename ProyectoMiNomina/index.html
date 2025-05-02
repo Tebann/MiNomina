@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <script>
+    (async function verificarSesion() {
+      try {
+        const response = await fetch("http://localhost:3000/verificar-sesion", {
+          credentials: "include"
+        });
+  
+        if (!response.ok) {
+          window.location.href = "login.html";
+        }
+      } catch (err) {
+        console.error("No se pudo verificar la sesión:", err);
+        window.location.href = "login.html";
+      }
+    })();
+  </script>  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mi Nómina</title>
@@ -8,9 +24,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
+
   <section class="father">
     <h1 class="title">Mi Nómina</h1>
-  
   <div class="curriculum-container" id="curriculum">
 
     <!-- Columna 1: Resumen + Registrar día -->
