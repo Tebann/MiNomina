@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Iniciar Sesión - Mi Nómina</title>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+    <section class="login-container">
+        <img src="./images/logo.png" class="login-logo"/>
+    <h1 class="title">Iniciar Sesión</h1>
+    <form id="loginForm" class="login-form">
+        <input type="text" id="usuario" placeholder="Usuario" required />
+        <input type="password" id="contrasena" placeholder="Contrasena" required />
+        <button type="submit" class="btn-word">Entrar</button>
+    </form>
+    <p id="loginError" class="error-text"></p>
+    </section>
+    <script src="js/api.js"></script>
+    <script src="js/login.js"></script>
+</body>
+</html>

@@ -2,18 +2,19 @@
 const API_URL = 'http://localhost:3000/api';
 
 // Almacenamiento del token
-let authToken = localStorage.getItem('token') || null;
+let authToken = localStorage.getItem('userToken') || null;
 
 // Función para establecer el token
 const setToken = (token) => {
   authToken = token;
-  localStorage.setItem('token', token);
+  localStorage.setItem('userToken', token);
 };
 
 // Función para limpiar el token (logout)
 const clearToken = () => {
   authToken = null;
-  localStorage.removeItem('token');
+  localStorage.removeItem('userToken');
+  localStorage.removeItem('userData');
 };
 
 // Función para verificar si el usuario está autenticado

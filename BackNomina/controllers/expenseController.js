@@ -1,6 +1,6 @@
 const { Expense } = require('../models');
 const { Op } = require('sequelize');
-const { sequelize } = require('../config/db');
+const { sequelize } = require('../connection/db/database');
 
 // @desc    Obtener gastos
 // @route   GET /api/expenses
