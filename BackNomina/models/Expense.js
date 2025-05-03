@@ -22,6 +22,22 @@ const Expense = sequelize.define('Expense', {
     type: DataTypes.DATEONLY,
     defaultValue: DataTypes.NOW
   },
+  tag: {
+    type: DataTypes.ENUM('Fijo', 'Imprevisto', 'Personal'),
+    allowNull: false,
+    defaultValue: 'Personal',
+    validate: {
+      isIn: {
+        args: [['Fijo', 'Imprevisto', 'Personal']],
+        msg: 'La etiqueta debe ser Fijo, Imprevisto o Personal'
+      }
+    }
+  },
+  isRecurring: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+    comment: 'Indica si el gasto se repite mensualmente (solo para gastos fijos)'
+  },
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
