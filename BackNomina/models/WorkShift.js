@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const { sequelize } = require('../config/db');
+const { sequelize } = require('../connection/db/database');
 const User = require('./User');
 
 const WorkShift = sequelize.define('WorkShift', {

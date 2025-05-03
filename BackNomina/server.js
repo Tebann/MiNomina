@@ -5,7 +5,8 @@ const path = require('path');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./config/swagger');
 const { errorHandler } = require('./middlewares/errorMiddleware');
-const { syncModels } = require('./models');
+const { syncModels } = require('./connection/db/syncDB');
+const { testConnection } = require('./connection/db/database');
 
 // Importar rutas
 const userRoutes = require('./routes/userRoutes');
@@ -45,13 +46,20 @@ app.use(errorHandler);
 // Puerto
 const PORT = process.env.PORT || 5000;
 
-// Sincronizar modelos con la base de datos
-syncModels().then(() => {
-  // Iniciar servidor
-  app.listen(PORT, () => {
-    console.log(`Servidor ejecutándose en el puerto ${PORT}`);
-    console.log(`Documentación API: http://localhost:${PORT}/api-docs`);
-  });
+// Probar conexión y sincronizar modelos con la base de datos
+testConnection().then(connected => {
+  if (connected) {
+    syncModels().then(() => {
+      // Iniciar servidor
+      app.listen(PORT, () => {
+        console.log(`Servidor ejecutándose en el puerto ${PORT}`);
+        console.log(`Documentación API: http://localhost:${PORT}/api-docs`);
+      });
+    });
+  } else {
+    console.error('No se pudo conectar a la base de datos. Cerrando aplicación.');
+    process.exit(1);
+  }
 });
 
 module.exports = app;
