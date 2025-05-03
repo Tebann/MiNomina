@@ -67,34 +67,31 @@
   // ——— Lógica de datos ———
   async function registrarDiaTrabajado(fecha, tipo, festivo) {
     try {
-      // Si el usuario está autenticado, usar la API
-      if (window.apiService && window.apiService.isAuthenticated()) {
-        const response = await window.apiService.workDay.createWorkDay({
-          date: fecha,
-          type: tipo,
-          isHoliday: festivo
-        });
-        
-        if (response.success) {
-          return response.data;
-        }
-        return null;
-      } else {
-        // Fallback a localStorage si no hay autenticación
-        const tMedio = 28500, tComp = 60300, multF = 1.75;
-        let pago = tipo === 'medio' ? tMedio : tComp;
-        if (festivo) pago *= multF;
+      // MODO DEMO: Siempre usar localStorage
+      const tMedio = 28500, tComp = 60300, multF = 1.75;
+      let pago = tipo === 'medio' ? tMedio : tComp;
+      if (festivo) pago *= multF;
 
-        const registros = JSON.parse(localStorage.getItem('diasTrabajados') || '[]');
-        if (registros.some(r => r.fecha === fecha)) {
-          showMessage(`Ya existe registro en ${fecha}`);
-          return null;
-        }
-        const nuevo = { fecha, tipo, festivo, total: pago };
-        registros.push(nuevo);
-        localStorage.setItem('diasTrabajados', JSON.stringify(registros));
-        return nuevo;
+      const registros = JSON.parse(localStorage.getItem('diasTrabajados') || '[]');
+      if (registros.some(r => r.fecha === fecha)) {
+        showMessage(`Ya existe registro en ${fecha}`);
+        return null;
       }
+      const nuevo = { 
+        id: Date.now(), // ID único basado en timestamp
+        fecha, 
+        tipo, 
+        festivo, 
+        total: pago,
+        // Añadir propiedades para compatibilidad con API
+        date: fecha,
+        type: tipo,
+        isHoliday: festivo,
+        amount: pago
+      };
+      registros.push(nuevo);
+      localStorage.setItem('diasTrabajados', JSON.stringify(registros));
+      return nuevo;
     } catch (error) {
       console.error('Error al registrar día trabajado:', error);
       showMessage('Error al registrar día trabajado: ' + (error.message || 'Error desconocido'));
@@ -104,58 +101,45 @@
 
   async function calcularIngresosMes() {
     try {
-      // Si el usuario está autenticado, usar la API
-      if (window.apiService && window.apiService.isAuthenticated()) {
-        const response = await window.apiService.workDay.getWorkDaysSummary(selectedYear, selectedMonth + 1);
-        if (response.success && response.data) {
-          return response.data.totalAmount || 0;
-        }
-        return 0;
-      } else {
-        // Fallback a localStorage si no hay autenticación
-        const regs = JSON.parse(localStorage.getItem('diasTrabajados') || '[]');
-        return regs
-          .filter(r => {
-            const d = new Date(r.fecha);
-            return d.getFullYear() === selectedYear && d.getMonth() === selectedMonth;
-          })
-          .reduce((sum, r) => sum + r.total, 0);
-      }
+      // MODO DEMO: Siempre usar localStorage
+      const regs = JSON.parse(localStorage.getItem('diasTrabajados') || '[]');
+      return regs
+        .filter(r => {
+          const d = new Date(r.fecha);
+          return d.getFullYear() === selectedYear && d.getMonth() === selectedMonth;
+        })
+        .reduce((sum, r) => sum + (parseFloat(r.total) || parseFloat(r.amount) || 0), 0);
     } catch (error) {
       console.error('Error al calcular ingresos del mes:', error);
       return 0;
     }
   }
 
-  async function registrarGasto(concepto, valor, tag = 'Personal') {
+  async function registrarGasto(concepto, valor, tag = 'Personal', isRecurring = false) {
     if (!concepto || isNaN(valor) || valor <= 0) {
       showMessage('Concepto válido y valor > 0, por favor.');
       return null;
     }
     
     try {
-      // Si el usuario está autenticado, usar la API
-      if (window.apiService && window.apiService.isAuthenticated()) {
-        const response = await window.apiService.expense.createExpense({
-          concept: concepto,
-          amount: valor,
-          tag: tag,
-          date: `${selectedYear}-${pad(selectedMonth + 1)}-01` // Primer día del mes seleccionado
-        });
-        
-        if (response.success) {
-          return response.data;
-        }
-        return null;
-      } else {
-        // Fallback a localStorage si no hay autenticación
-        const all = JSON.parse(localStorage.getItem('gastos') || '[]');
-        const mesKey = `${selectedYear}-${pad(selectedMonth + 1)}`;
-        const nuevo = { month: mesKey, concepto, valor, tag };
-        all.push(nuevo);
-        localStorage.setItem('gastos', JSON.stringify(all));
-        return nuevo;
-      }
+      // MODO DEMO: Siempre usar localStorage
+      const all = JSON.parse(localStorage.getItem('gastos') || '[]');
+      const mesKey = `${selectedYear}-${pad(selectedMonth + 1)}`;
+      const nuevo = { 
+        id: Date.now(), // ID único basado en timestamp
+        month: mesKey, 
+        concepto, 
+        valor, 
+        tag, 
+        isRecurring,
+        // Añadir propiedades para compatibilidad con API
+        concept: concepto,
+        amount: valor,
+        date: `${selectedYear}-${pad(selectedMonth + 1)}-01`
+      };
+      all.push(nuevo);
+      localStorage.setItem('gastos', JSON.stringify(all));
+      return nuevo;
     } catch (error) {
       console.error('Error al registrar gasto:', error);
       showMessage('Error al registrar gasto: ' + (error.message || 'Error desconocido'));
@@ -165,21 +149,12 @@
 
   async function calcularGastosMes() {
     try {
-      // Si el usuario está autenticado, usar la API
-      if (window.apiService && window.apiService.isAuthenticated()) {
-        const response = await window.apiService.expense.getExpensesSummary(selectedYear, selectedMonth + 1);
-        if (response.success && response.data && response.data.total) {
-          return response.data.total.totalAmount || 0;
-        }
-        return 0;
-      } else {
-        // Fallback a localStorage si no hay autenticación
-        const all = JSON.parse(localStorage.getItem('gastos') || '[]');
-        const mesKey = `${selectedYear}-${pad(selectedMonth + 1)}`;
-        return all
-          .filter(g => g.month === mesKey)
-          .reduce((sum, g) => sum + g.valor, 0);
-      }
+      // MODO DEMO: Siempre usar localStorage
+      const all = JSON.parse(localStorage.getItem('gastos') || '[]');
+      const mesKey = `${selectedYear}-${pad(selectedMonth + 1)}`;
+      return all
+        .filter(g => g.month === mesKey)
+        .reduce((sum, g) => sum + parseFloat(g.valor || g.amount || 0), 0);
     } catch (error) {
       console.error('Error al calcular gastos del mes:', error);
       return 0;
@@ -191,19 +166,11 @@
     let workDays = [];
     
     try {
-      // Si el usuario está autenticado, usar la API
-      if (window.apiService && window.apiService.isAuthenticated()) {
-        const response = await window.apiService.workDay.getWorkDays(selectedYear, selectedMonth + 1);
-        if (response.success) {
-          workDays = response.data || [];
-        }
-      } else {
-        // Fallback a localStorage si no hay autenticación
-        workDays = JSON.parse(localStorage.getItem('diasTrabajados') || '[]');
-      }
+      // MODO DEMO: Siempre usar localStorage
+      workDays = JSON.parse(localStorage.getItem('diasTrabajados') || '[]');
     } catch (error) {
       console.error('Error al obtener días trabajados:', error);
-      workDays = JSON.parse(localStorage.getItem('diasTrabajados') || '[]');
+      workDays = [];
     }
     
     const primerDia = new Date(selectedYear, selectedMonth, 1).getDay();
@@ -310,15 +277,10 @@
             `¿Eliminar día ${fechaFormateada}?`,
             async () => {
               try {
-                if (window.apiService && window.apiService.isAuthenticated()) {
-                  // Eliminar usando la API
-                  await window.apiService.workDay.deleteWorkDay(r.id);
-                } else {
-                  // Eliminar de localStorage
-                  const todos = JSON.parse(localStorage.getItem('diasTrabajados') || '[]')
-                    .filter(x => x.fecha !== fecha);
-                  localStorage.setItem('diasTrabajados', JSON.stringify(todos));
-                }
+                // MODO DEMO: Siempre usar localStorage
+                const todos = JSON.parse(localStorage.getItem('diasTrabajados') || '[]')
+                  .filter(x => (x.fecha !== fecha && x.date !== fecha));
+                localStorage.setItem('diasTrabajados', JSON.stringify(todos));
                 updateAll();
               } catch (error) {
                 console.error('Error al eliminar día trabajado:', error);
@@ -341,20 +303,17 @@
     let expenses = [];
     
     try {
-      // Si el usuario está autenticado, usar la API
-      if (window.apiService && window.apiService.isAuthenticated()) {
-        const response = await window.apiService.expense.getExpenses(selectedYear, selectedMonth + 1);
-        if (response.success) {
-          expenses = response.data || [];
-        }
-      } else {
-        // Fallback a localStorage si no hay autenticación
-        expenses = JSON.parse(localStorage.getItem('gastos') || '[]')
-          .map((g, i) => ({ ...g, idx: i }))
-          .filter(g => g.month === `${selectedYear}-${pad(selectedMonth + 1)}`);
-      }
+      // MODO DEMO: Siempre usar localStorage
+      expenses = JSON.parse(localStorage.getItem('gastos') || '[]')
+        .map((g, i) => ({ ...g, idx: i }))
+        .filter(g => g.month === `${selectedYear}-${pad(selectedMonth + 1)}`);
       
       listaGastosEl.innerHTML = '';
+      
+      if (expenses.length === 0) {
+        listaGastosEl.innerHTML = '<div class="info-message">No hay gastos registrados para este mes</div>';
+        return;
+      }
       
       expenses.forEach(g => {
         const card = document.createElement('div');
@@ -365,6 +324,7 @@
         const valor = g.amount || g.valor || 0;
         const valorStr = Number(valor).toLocaleString('en-US');
         const tag = g.tag || 'Personal';
+        const isRecurring = g.isRecurring || false;
         
         // Añadir clase según la etiqueta
         let tagClass = '';
@@ -377,6 +337,7 @@
           <div class="card-name">
             ${concepto}
             <span class="badge ${tagClass}">${tag}</span>
+            ${isRecurring ? '<span class="badge tag-recurring">Recurrente</span>' : ''}
           </div>
           <div>$${valorStr}</div>
         </div>
@@ -453,28 +414,9 @@
       let diasTrabajados = 0;
       let gastosRegistrados = 0;
       
-      if (window.apiService && window.apiService.isAuthenticated()) {
-        try {
-          // Obtener resumen de días trabajados
-          const workDaysResponse = await window.apiService.workDay.getWorkDays(selectedYear, selectedMonth + 1);
-          if (workDaysResponse.success) {
-            diasTrabajados = workDaysResponse.data.length || 0;
-          }
-          
-          // Obtener resumen de gastos
-          const expensesResponse = await window.apiService.expense.getExpenses(selectedYear, selectedMonth + 1);
-          if (expensesResponse.success) {
-            gastosRegistrados = expensesResponse.data.length || 0;
-          }
-        } catch (error) {
-          console.error('Error al obtener conteos:', error);
-          diasTrabajados = contarDiasTrabajadosMes();
-          gastosRegistrados = contarGastosRegistradosMes();
-        }
-      } else {
-        diasTrabajados = contarDiasTrabajadosMes();
-        gastosRegistrados = contarGastosRegistradosMes();
-      }
+      // MODO DEMO: Siempre usar localStorage
+      diasTrabajados = contarDiasTrabajadosMes();
+      gastosRegistrados = contarGastosRegistradosMes();
       
       diasCodeEl.textContent = `${diasTrabajados} días trabajados`;
       gastosCodeEl.textContent = `${gastosRegistrados} gastos registrados`;
@@ -566,7 +508,7 @@ async function init() {
         }
       } else {
         // Fallback a localStorage si no hay autenticación
-        const g = await registrarGasto(c, v, tag);
+        const g = await registrarGasto(c, v, tag, isRecurring);
         if (g) {
           showMessage(`Gasto "${c}" agregado: $${v.toFixed(2)}`);
           formGasto.reset();

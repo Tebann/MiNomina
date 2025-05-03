@@ -257,6 +257,11 @@ body {
   background: #2ecc71;
 }
 
+.badge.tag-recurring {
+  background: #17a2b8;
+  margin-left: 5px;
+}
+
 /* Estilos para autenticación */
 header {
   display: flex;

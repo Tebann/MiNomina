@@ -1,6 +1,11 @@
 // API Service para conectar con el backend
 const API_URL = 'http://localhost:3000/api';
 
+// Para pruebas locales con archivos HTML
+if (window.location.protocol === 'file:') {
+  console.log('Ejecutando en modo local (file://), usando API en localhost');
+}
+
 // Almacenamiento del token
 let authToken = localStorage.getItem('userToken') || null;
 

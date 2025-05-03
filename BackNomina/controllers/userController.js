@@ -60,12 +60,15 @@ const registerUser = async (req, res) => {
 // @access  Public
 const loginUser = async (req, res) => {
   try {
+    console.log('Intento de login con:', req.body);
     const { email, password } = req.body;
 
     // Verificar si el usuario existe
     const user = await User.findOne({ where: { email } });
+    console.log('Usuario encontrado:', user ? user.email : 'No encontrado');
 
     if (!user) {
+      console.log('Usuario no encontrado');
       return res.status(401).json({
         success: false,
         message: 'Email o contraseña incorrectos',
@@ -73,14 +76,21 @@ const loginUser = async (req, res) => {
     }
 
     // Verificar contraseña
+    console.log('Verificando contraseña...');
     const isMatch = await user.matchPassword(password);
+    console.log('¿Contraseña correcta?', isMatch);
 
     if (!isMatch) {
+      console.log('Contraseña incorrecta');
       return res.status(401).json({
         success: false,
         message: 'Email o contraseña incorrectos',
       });
     }
+
+    console.log('Login exitoso, generando token...');
+    const token = generateToken(user.id);
+    console.log('Token generado');
 
     res.json({
       success: true,
@@ -92,10 +102,11 @@ const loginUser = async (req, res) => {
         companyName: user.companyName,
         companyNit: user.companyNit,
         companyCity: user.companyCity,
-        token: generateToken(user.id),
+        token: token,
       },
     });
   } catch (error) {
+    console.error('Error en login:', error);
     res.status(500).json({
       success: false,
       message: 'Error al iniciar sesión',

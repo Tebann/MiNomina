@@ -97,6 +97,18 @@ Este README documenta toda la estructura, funcionamiento, tecnologías utilizada
    - Abre el archivo `ProyectoMiNomina/login.html` en tu navegador
    - O utiliza un servidor local como Live Server de VS Code
 
+### Modo Demo
+
+La aplicación incluye un modo demo que permite utilizarla sin necesidad de ejecutar el backend:
+
+1. Simplemente abre el archivo `ProyectoMiNomina/login.html` en tu navegador
+2. Utiliza las credenciales de demo:
+   - Email: `demo@example.com`
+   - Contraseña: `demo123`
+3. También puedes registrar un nuevo usuario que se guardará localmente
+
+En modo demo, todos los datos se almacenan en el localStorage del navegador, permitiendo probar todas las funcionalidades sin necesidad de configurar el backend.
+
 ---
 
 ## 🧠 Detalles técnicos importantes

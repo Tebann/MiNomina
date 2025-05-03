@@ -44,31 +44,25 @@ function toggleAuthForm() {
 
 // Función para verificar autenticación y mostrar la interfaz correspondiente
 async function checkAuth() {
-  // Si no existe el servicio de API, redirigir a login
-  if (!window.apiService) {
-    window.location.href = "login.html";
-    return false;
-  }
-
-  if (window.apiService.isAuthenticated()) {
+  // Verificar si hay un token en localStorage
+  const userToken = localStorage.getItem('userToken');
+  const userData = localStorage.getItem('userData');
+  
+  if (userToken && userData) {
     try {
-      // Obtener perfil del usuario
-      const response = await window.apiService.auth.getProfile();
-      if (response.success) {
-        // Mostrar la aplicación y ocultar formularios de auth
-        if (authContainer) authContainer.style.display = 'none';
-        if (appContainer) appContainer.style.display = 'flex';
-        updateUserInfo(response.data);
-        return true;
-      } else {
-        // Si la respuesta no es exitosa, redirigir a login
-        window.location.href = "login.html";
-        return false;
-      }
+      // Mostrar la aplicación y ocultar formularios de auth
+      if (authContainer) authContainer.style.display = 'none';
+      if (appContainer) appContainer.style.display = 'flex';
+      
+      // Actualizar información del usuario
+      const user = JSON.parse(userData);
+      updateUserInfo(user);
+      return true;
     } catch (error) {
       console.error('Error al verificar autenticación:', error);
       // Si hay error, limpiar token y redirigir a login
-      window.apiService.auth.logout();
+      localStorage.removeItem('userToken');
+      localStorage.removeItem('userData');
       window.location.href = "login.html";
       return false;
     }
@@ -135,8 +129,11 @@ function initAuth() {
   // Configurar evento de logout
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
-      window.apiService.auth.logout();
-      // No es necesario llamar a checkAuth() ya que clearToken() ya redirige a login.html
+      // Limpiar token y datos de usuario
+      localStorage.removeItem('userToken');
+      localStorage.removeItem('userData');
+      // Redirigir a login
+      window.location.href = "login.html";
     });
   }
   
