@@ -4,17 +4,59 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Iniciar Sesión - Mi Nómina</title>
-    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="./css/styles.css" />
 </head>
 <body>
     <section class="login-container">
-        <img src="./images/logo.png" class="login-logo"/>
-    <h1 class="title">Iniciar Sesión</h1>
-    <form id="loginForm" class="login-form">
-        <input type="text" id="usuario" placeholder="Usuario" required />
-        <input type="password" id="contrasena" placeholder="Contrasena" required />
-        <button type="submit" class="btn-word">Entrar</button>
-    </form>
+        <div id="authContainer" class="auth-container">
+            <div class="logo-container">
+              <img src="images/logo.png" alt="Mi Nómina Logo" class="auth-logo">
+            </div>
+            
+            <div id="authMessage" class="auth-message"></div>
+            
+            <!-- Formulario de login -->
+            <div id="loginContainer" class="auth-form-container">
+              <h2>Iniciar sesión</h2>
+              <form id="loginForm">
+                <div class="form-group">
+                  <label for="loginEmail">Email:</label>
+                  <input type="email" id="loginEmail" required />
+                </div>
+                <div class="form-group">
+                  <label for="loginPassword">Contraseña:</label>
+                  <input type="password" id="loginPassword" required />
+                </div>
+                <button type="submit" class="btn-primary">Iniciar sesión</button>
+              </form>
+              <p>¿No tienes cuenta? <a href="#" id="toggleRegister">Regístrate aquí</a></p>
+            </div>
+            
+            <!-- Formulario de registro -->
+            <div id="registerContainer" class="auth-form-container" style="display: none;">
+              <h2>Crear cuenta</h2>
+              <form id="registerForm">
+                <div class="form-group">
+                  <label for="registerName">Nombre completo:</label>
+                  <input type="text" id="registerName" required />
+                </div>
+                <div class="form-group">
+                  <label for="registerEmail">Email:</label>
+                  <input type="email" id="registerEmail" required />
+                </div>
+                <div class="form-group">
+                  <label for="registerPassword">Contraseña:</label>
+                  <input type="password" id="registerPassword" required minlength="6" />
+                </div>
+                <div class="form-group">
+                  <label for="registerIdentification">Identificación:</label>
+                  <input type="text" id="registerIdentification" required />
+                </div>
+                <button type="submit" class="btn-primary">Registrarse</button>
+              </form>
+              <p>¿Ya tienes cuenta? <a href="#" id="toggleLogin">Inicia sesión aquí</a></p>
+            </div>
+          </div>
     <p id="loginError" class="error-text"></p>
     </section>
     <script src="js/api.js"></script>

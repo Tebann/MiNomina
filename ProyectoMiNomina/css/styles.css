@@ -368,6 +368,11 @@ header {
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3)); /* sombra que sigue la silueta */
 }
 
+.login-container{
+  /*alinear al centro*/
+  margin-top: 20vh;
+}
+
 .error-text {
   color: #ff4848;
   text-align: center;
