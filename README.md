@@ -1,6 +1,6 @@
 # Mi Nómina - Proyecto de Gestión de Ingresos y Gastos
 
-Bienvenido al proyecto **Mi Nómina**, una aplicación web sencilla e intuitiva que te permite registrar y gestionar tus días trabajados, gastos mensuales y generar cuentas de cobro en formato PDF de manera automática.
+Bienvenido al proyecto **Mi Nómina**, una aplicación web que te permite registrar y gestionar tus días trabajados, gastos mensuales y generar cuentas de cobro en formato PDF de manera automática.
 
 Este README documenta toda la estructura, funcionamiento, tecnologías utilizadas y guía de uso.
 
@@ -8,32 +8,35 @@ Este README documenta toda la estructura, funcionamiento, tecnologías utilizada
 
 ## ✨ Características principales
 
-- **Registrar días trabajados**: Guarda la fecha, tipo de jornada (medio tiempo o tiempo completo) y si fue un día festivo. (INCOMPLETO : Se necesita que el usuario pueda agregar sus propias jornadas,
-con sus respectivos pagos)
-- **Registrar gastos del mes**: Guarda gastos con concepto y valor.
+- **Autenticación de usuarios**: Registro e inicio de sesión de usuarios con JWT.
+- **Registrar días trabajados**: Guarda la fecha, tipo de jornada (medio tiempo o tiempo completo) y si fue un día festivo.
+- **Registrar gastos del mes**: Guarda gastos con concepto, valor y etiqueta (Fijo, Imprevisto, Personal).
+- **Gastos recurrentes**: Los gastos fijos pueden marcarse como recurrentes para generarse automáticamente cada mes.
 - **Visualizar calendario del mes**: Muestra los días trabajados resaltados.
 - **Listado de días trabajados recientes**: Visualiza días trabajados ordenados, con formato amigable.
-- **Listado de gastos recientes**: Visualiza los gastos registrados por mes.
+- **Listado de gastos recientes**: Visualiza los gastos registrados por mes y filtrados por etiqueta.
 - **Resumen mensual**:
   - Total ingresos.
-  - Total gastos.
-  - Balance neto (muestra "Fondos insuficientes" si el balance es negativo).
-- **Generar Cuenta de Cobro (PDF)**: Genera automáticamente un documento PDF formal basado en los ingresos mensuales.(INCOMPLETO : Se necesita que el usuario pueda ingresar al iniciar sesion, sus datos,
-para luego poder utilizarlos en la generacion de la cuenta de cobro)
-
-(INCOMPLETO: Se debe de realizar el login para cada usuario en especifico)
+  - Total gastos (general y por etiqueta).
+  - Balance neto.
+- **Generar Cuenta de Cobro (PDF)**: Genera automáticamente un documento PDF formal basado en los ingresos mensuales.
 
 ---
 
 ## 🛠️ Tecnologías utilizadas
 
+### Frontend
 - **HTML5** y **CSS3**: Estructura y estilo.
-- **JavaScript Vanilla (ES6+)**: Lógica y dinámica.
-- **LocalStorage**: Almacenamiento de datos local.
+- **JavaScript (ES6+)**: Lógica y dinámica.
 - **jsPDF**: Generación de documentos PDF en el navegador.
 
-Bibliotecas externas:
-- [jsPDF 2.5.1](https://cdnjs.com/libraries/jspdf)
+### Backend
+- **Node.js** y **Express**: Servidor y API REST.
+- **SQLite**: Base de datos relacional ligera.
+- **Sequelize**: ORM para interactuar con la base de datos.
+- **JWT**: Autenticación basada en tokens.
+- **Swagger**: Documentación de la API.
+- **bcryptjs**: Encriptación de contraseñas.
 
 ---
 
@@ -41,65 +44,116 @@ Bibliotecas externas:
 
 ```
 / (raíz del proyecto)
-├── index.html          # Estructura HTML principal
-├── css/
-│   └── styles.css      # Estilos personalizados
-├── js/
-│   └── app.js          # Lógica y manejo de eventos
-├── README.md           # (este archivo)
+├── BackNomina/                # Backend de la aplicación
+│   ├── config/                # Configuraciones
+│   ├── connection/            # Conexión a la base de datos
+│   ├── controllers/           # Controladores de la API
+│   ├── data/                  # Datos de la aplicación (SQLite)
+│   ├── middlewares/           # Middlewares (autenticación, errores)
+│   ├── models/                # Modelos de datos (Sequelize)
+│   ├── routes/                # Rutas de la API
+│   ├── utils/                 # Utilidades
+│   ├── .env                   # Variables de entorno
+│   ├── package.json           # Dependencias del backend
+│   └── server.js              # Punto de entrada del servidor
+├── ProyectoMiNomina/          # Frontend de la aplicación
+│   ├── css/                   # Estilos CSS
+│   ├── js/                    # Scripts JavaScript
+│   │   ├── api.js             # Servicios de API
+│   │   ├── app.js             # Lógica principal
+│   │   └── login.js           # Lógica de autenticación
+│   ├── index.html             # Página principal
+│   └── login.html             # Página de inicio de sesión
+└── README.md                  # Documentación del proyecto
 ```
 
+## 🚀 Instalación y ejecución
+
+### Requisitos previos
+- Node.js (v14 o superior)
+- npm (v6 o superior)
+
+### Pasos para ejecutar el proyecto
+
+1. **Clonar el repositorio**
+   ```bash
+   git clone https://github.com/Tebann/MiNomina.git
+   cd MiNomina
+   ```
+
+2. **Configurar el backend**
+   ```bash
+   cd BackNomina
+   npm install
+   ```
+
+3. **Iniciar el servidor backend**
+   ```bash
+   npm start
+   ```
+   El servidor se ejecutará en http://localhost:3000
+
+4. **Abrir el frontend**
+   - Abre el archivo `ProyectoMiNomina/login.html` en tu navegador
+   - O utiliza un servidor local como Live Server de VS Code
+
+---
 
 ## 🧠 Detalles técnicos importantes
 
-- **Registro de días trabajados**:
-  - Tiempo completo y medio tiempo manejan tarifas diferentes.
-  - Los días festivos aplican un incremento al pago.
-  - La información se almacena en LocalStorage (`diasTrabajados`).
+### Autenticación
+- Sistema basado en JWT (JSON Web Tokens).
+- Tokens almacenados en localStorage.
+- Middleware de protección para rutas privadas.
 
-- **Registro de gastos**:
-  - Se guarda el concepto y valor.
-  - Asociado al mes y año actuales.
-  - Información guardada en LocalStorage (`gastos`).
+### Gastos
+- Clasificados por etiquetas: Fijo, Imprevisto, Personal.
+- Los gastos fijos pueden marcarse como recurrentes.
+- Generación automática de gastos recurrentes para cada mes.
 
-- **Resumen y balance**:
-  - Calculado automáticamente para el mes y año seleccionados.
-  - Actualiza en tiempo real al registrar o eliminar días o gastos.
+### Días trabajados
+- Soporte para diferentes tipos de jornada.
+- Cálculo de ingresos basado en el tipo de jornada y si es día festivo.
 
-- **Generación del PDF**:
-  - Usa datos fijos de empresa, nombre, cédula y concepto.(Esto se cambiará proximamente)
-  - El PDF incluye:
-    - Fecha de emisión.
-    - Empresa y NIT.
-    - Nombre del trabajador y C.C.
-    - Total a pagar.
-    - Concepto del cobro.
-    - Espacio de firma.(El usuario deberá poder subir un fotografia de su firma)
+### API REST
+- Documentación completa con Swagger en `/api-docs`.
+- Respuestas estandarizadas con formato JSON.
+- Manejo de errores centralizado.
 
 ---
 
-## 🖌️ Detalles de diseño
+## 📝 API Endpoints
 
-- Diseño minimalista y responsivo.
-- Interacción intuitiva:
-  - Botones visibles sólo al pasar el puntero.
-  - Difuminado de tarjetas al hacer hover.
-- Modal de confirmación amigable para eliminar días o gastos.
+### Usuarios
+- `POST /api/users` - Registrar un nuevo usuario
+- `POST /api/users/login` - Iniciar sesión
+- `GET /api/users/profile` - Obtener perfil de usuario
+- `PUT /api/users/profile` - Actualizar perfil de usuario
 
----
+### Días trabajados
+- `GET /api/workdays` - Obtener días trabajados
+- `POST /api/workdays` - Crear un día trabajado
+- `DELETE /api/workdays/:id` - Eliminar un día trabajado
+- `GET /api/workdays/summary` - Obtener resumen de ingresos
 
-## 📅 Mejoras futuras sugeridas
+### Gastos
+- `GET /api/expenses` - Obtener gastos
+- `POST /api/expenses` - Crear un gasto
+- `DELETE /api/expenses/:id` - Eliminar un gasto
+- `GET /api/expenses/summary` - Obtener resumen de gastos
+- `POST /api/expenses/generate-recurring` - Generar gastos recurrentes
 
-- Soporte para múltiples perfiles de usuario.
-- Configuración de empresa y datos dinámicos.
-- Exportar resumen mensual completo en PDF.
-- Estadísticas de ahorro vs gasto mensual.
+### Jornadas de trabajo
+- `GET /api/workshifts` - Obtener jornadas de trabajo
+- `POST /api/workshifts` - Crear una jornada de trabajo
+- `PUT /api/workshifts/:id` - Actualizar una jornada de trabajo
+- `DELETE /api/workshifts/:id` - Eliminar una jornada de trabajo
 
 ---
 
 ## 🧑‍💻 Autor y créditos
 
-Proyecto desarrollado con dedicación para aprender y practicar manejo de datos locales, generación de documentos en el cliente, y buenas prácticas de organización de aplicaciones web.
+Proyecto desarrollado con dedicación para aprender y practicar desarrollo full-stack, autenticación, bases de datos relacionales y buenas prácticas de organización de aplicaciones web.
 
 ¡Gracias por usar **Mi Nómina**!
 
