@@ -289,6 +289,16 @@ header {
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
+.logo-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.auth-logo {
+  max-width: 150px;
+  height: auto;
+}
+
 .auth-form-container {
   margin-top: 20px;
 }

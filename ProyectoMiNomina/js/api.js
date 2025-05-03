@@ -1,5 +1,5 @@
 // API Service para conectar con el backend
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'http://localhost:3000/api';
 
 // Almacenamiento del token
 let authToken = localStorage.getItem('token') || null;
