@@ -15,6 +15,11 @@ const clearToken = () => {
   authToken = null;
   localStorage.removeItem('userToken');
   localStorage.removeItem('userData');
+  
+  // Redirigir a la página de login después de logout
+  if (window.location.pathname !== '/login.html') {
+    window.location.href = 'login.html';
+  }
 };
 
 // Función para verificar si el usuario está autenticado

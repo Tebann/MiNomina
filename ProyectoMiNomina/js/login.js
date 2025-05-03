@@ -1,7 +1,21 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Verificar si ya hay una sesión activa
     if (window.apiService && window.apiService.isAuthenticated()) {
-        window.location.href = "index.html";
+        // Verificar que el token sea válido antes de redirigir
+        window.apiService.auth.getProfile()
+            .then(response => {
+                if (response.success) {
+                    window.location.href = "index.html";
+                } else {
+                    // Si hay error en la respuesta, limpiar token
+                    window.apiService.auth.logout();
+                }
+            })
+            .catch(error => {
+                console.error("Error al verificar perfil:", error);
+                // Si hay error en la petición, limpiar token
+                window.apiService.auth.logout();
+            });
         return;
     }
 

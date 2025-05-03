@@ -44,28 +44,39 @@ function toggleAuthForm() {
 
 // Función para verificar autenticación y mostrar la interfaz correspondiente
 async function checkAuth() {
+  // Si no existe el servicio de API, redirigir a login
+  if (!window.apiService) {
+    window.location.href = "login.html";
+    return false;
+  }
+
   if (window.apiService.isAuthenticated()) {
     try {
       // Obtener perfil del usuario
       const response = await window.apiService.auth.getProfile();
       if (response.success) {
         // Mostrar la aplicación y ocultar formularios de auth
-        authContainer.style.display = 'none';
-        appContainer.style.display = 'flex';
+        if (authContainer) authContainer.style.display = 'none';
+        if (appContainer) appContainer.style.display = 'flex';
         updateUserInfo(response.data);
         return true;
+      } else {
+        // Si la respuesta no es exitosa, redirigir a login
+        window.location.href = "login.html";
+        return false;
       }
     } catch (error) {
       console.error('Error al verificar autenticación:', error);
-      // Si hay error, limpiar token y mostrar login
+      // Si hay error, limpiar token y redirigir a login
       window.apiService.auth.logout();
+      window.location.href = "login.html";
+      return false;
     }
+  } else {
+    // Si no está autenticado, redirigir a login
+    window.location.href = "login.html";
+    return false;
   }
-  
-  // Si no está autenticado o hubo error, mostrar login
-  authContainer.style.display = 'block';
-  appContainer.style.display = 'none';
-  return false;
 }
 
 // Inicializar autenticación
@@ -125,7 +136,7 @@ function initAuth() {
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
       window.apiService.auth.logout();
-      checkAuth();
+      // No es necesario llamar a checkAuth() ya que clearToken() ya redirige a login.html
     });
   }
   
