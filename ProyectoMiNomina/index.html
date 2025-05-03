@@ -8,10 +8,67 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-  <h1 class="title">Mi Nómina</h1>
-  <button id="btnGenerarWord" class="btn-word">Generar Cuenta de Cobro</button>
-  <div class="curriculum-container" id="curriculum">
-
+  <header>
+    <h1 class="title">Mi Nómina</h1>
+    <div class="user-info">
+      <span id="userInfo"></span>
+      <button id="logoutBtn" class="btn-logout">Cerrar sesión</button>
+    </div>
+  </header>
+  
+  <!-- Contenedor de autenticación -->
+  <div id="authContainer" class="auth-container">
+    <div id="authMessage" class="auth-message"></div>
+    
+    <!-- Formulario de login -->
+    <div id="loginContainer" class="auth-form-container">
+      <h2>Iniciar sesión</h2>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="loginEmail">Email:</label>
+          <input type="email" id="loginEmail" required />
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Contraseña:</label>
+          <input type="password" id="loginPassword" required />
+        </div>
+        <button type="submit" class="btn-primary">Iniciar sesión</button>
+      </form>
+      <p>¿No tienes cuenta? <a href="#" id="toggleRegister">Regístrate aquí</a></p>
+    </div>
+    
+    <!-- Formulario de registro -->
+    <div id="registerContainer" class="auth-form-container" style="display: none;">
+      <h2>Crear cuenta</h2>
+      <form id="registerForm">
+        <div class="form-group">
+          <label for="registerName">Nombre completo:</label>
+          <input type="text" id="registerName" required />
+        </div>
+        <div class="form-group">
+          <label for="registerEmail">Email:</label>
+          <input type="email" id="registerEmail" required />
+        </div>
+        <div class="form-group">
+          <label for="registerPassword">Contraseña:</label>
+          <input type="password" id="registerPassword" required minlength="6" />
+        </div>
+        <div class="form-group">
+          <label for="registerIdentification">Identificación:</label>
+          <input type="text" id="registerIdentification" required />
+        </div>
+        <button type="submit" class="btn-primary">Registrarse</button>
+      </form>
+      <p>¿Ya tienes cuenta? <a href="#" id="toggleLogin">Inicia sesión aquí</a></p>
+    </div>
+  </div>
+  
+  <div class="actions-container">
+    <button id="btnGenerarWord" class="btn-word">Generar Cuenta de Cobro</button>
+    <button id="btnGenerarRecurrentes" class="btn-recurring">Generar Gastos Recurrentes</button>
+  </div>
+  
+  <div class="curriculum-container" id="curriculum" style="display: none;">
     <!-- Columna 1: Resumen + Registrar día -->
     <div class="column">
       <div class="card-container">
@@ -84,6 +141,17 @@
             <label>Valor:
               <input type="number" id="valorGasto" min="0.01" step="0.01" required />
             </label>
+            <label>Etiqueta:
+              <select id="tagGasto" required>
+                <option value="Personal">Personal</option>
+                <option value="Fijo">Fijo</option>
+                <option value="Imprevisto">Imprevisto</option>
+              </select>
+            </label>
+            <label>
+              <input type="checkbox" id="esRecurrente" />
+              Gasto recurrente (solo para Fijos)
+            </label>
             <button type="submit">Registrar Gasto</button>
           </form>
         </div>
@@ -93,7 +161,6 @@
         <div id="listaGastos"></div>
       </div>
     </div>
-
   </div>
 
   <!-- Modal genérico -->
@@ -107,6 +174,8 @@
     </div>
   </div>
 
+  <script src="js/api.js" defer></script>
+  <script src="js/auth.js" defer></script>
   <script src="js/app.js" defer></script>
 </body>
 </html>
