@@ -53,42 +53,44 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Configurar evento de login
     if (loginForm) {
-        loginForm.addEventListener("submit", function (e) {
+        loginForm.addEventListener("submit", async function (e) {
             e.preventDefault();
 
             const email = document.getElementById("loginEmail").value;
             const password = document.getElementById("loginPassword").value;
 
-            // MODO DEMO: Aceptar cualquier email/contraseña para demostración
-            // En un entorno real, esto se conectaría al backend
-            
-            // Crear un token de demostración
-            const demoToken = "demo_token_" + Date.now();
-            
-            // Guardar token y datos de usuario en localStorage
-            localStorage.setItem('userToken', demoToken);
-            localStorage.setItem('userData', JSON.stringify({
-                id: 1,
-                name: "Usuario Demo",
-                email: email,
-                identification: "12345678",
-                companyName: "Empresa Demo",
-                companyNit: "123456789",
-                companyCity: "Ciudad Demo"
-            }));
-            
-            showMessage("Login exitoso. Redirigiendo...", false);
-            
-            // Redirigir a index.html después de un breve retraso
-            setTimeout(() => {
-                window.location.href = "index.html";
-            }, 1500);
+            try {
+                // Usar el servicio de API para autenticar
+                const response = await window.apiService.auth.login({ email, password });
+                
+                if (response.success) {
+                    // Guardar datos del usuario en localStorage
+                    localStorage.setItem('userData', JSON.stringify({
+                        id: response.data.id,
+                        name: response.data.name,
+                        email: response.data.email,
+                        identification: response.data.identification,
+                        companyName: response.data.companyName,
+                        companyNit: response.data.companyNit,
+                        companyCity: response.data.companyCity
+                    }));
+                    
+                    showMessage("Inicio de sesión exitoso. Redirigiendo...", false);
+                    
+                    // Redirigir a index.html después de un breve retraso
+                    setTimeout(() => {
+                        window.location.href = "index.html";
+                    }, 1500);
+                }
+            } catch (error) {
+                showMessage(error.message || "Error al iniciar sesión. Verifica tus credenciales.", true);
+            }
         });
     }
     
     // Configurar evento de registro
     if (registerForm) {
-        registerForm.addEventListener("submit", function (e) {
+        registerForm.addEventListener("submit", async function (e) {
             e.preventDefault();
 
             const name = document.getElementById("registerName").value;
@@ -96,13 +98,26 @@ document.addEventListener('DOMContentLoaded', function() {
             const password = document.getElementById("registerPassword").value;
             const identification = document.getElementById("registerIdentification").value;
 
-            // MODO DEMO: Simular registro exitoso
-            showMessage("Registro exitoso. Ahora puedes iniciar sesión.", false);
-            
-            // Cambiar al formulario de login después de un breve retraso
-            setTimeout(() => {
-                toggleAuthForm();
-            }, 1500);
+            try {
+                // Usar el servicio de API para registrar
+                const response = await window.apiService.auth.register({
+                    name,
+                    email,
+                    password,
+                    identification
+                });
+                
+                if (response.success) {
+                    showMessage("Registro exitoso. Ahora puedes iniciar sesión.", false);
+                    
+                    // Cambiar al formulario de login después de un breve retraso
+                    setTimeout(() => {
+                        toggleAuthForm();
+                    }, 1500);
+                }
+            } catch (error) {
+                showMessage(error.message || "Error al registrar usuario.", true);
+            }
         });
     }
     
