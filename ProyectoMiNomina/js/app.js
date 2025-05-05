@@ -632,7 +632,7 @@ async function init() {
           
           if (response.success) {
             const count = response.data.length;
-            let message = `Se han generado ${count} gastos recurrentes para este mes.`;
+            let message = `Gastos recurrentes para este mes.`;
             
             // Si hay gastos fijos, mostrar un resumen
             if (expensesResponse.success && expensesResponse.data.length > 0) {
