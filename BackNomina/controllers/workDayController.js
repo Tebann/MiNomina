@@ -1,6 +1,7 @@
-const { WorkDay, WorkShift } = require('../models');
+const WorkDay = require('../models/WorkDay');
+const WorkShift = require('../models/WorkShift');
 const { Op } = require('sequelize');
-const { sequelize } = require('../config/db');
+const { sequelize } = require('../connection/db/database');
 
 // @desc    Obtener días trabajados
 // @route   GET /api/workdays
@@ -51,7 +52,7 @@ const createWorkDay = async (req, res) => {
     const existingWorkDay = await WorkDay.findOne({
       where: {
         userId: req.user.id,
-        date: new Date(date)
+        date: date
       }
     });
     

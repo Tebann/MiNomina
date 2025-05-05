@@ -26,6 +26,20 @@ const getExpenses = async (req, res) => {
       whereClause.tag = tag;
     }
     
+    // Eliminar gastos fijos antiguos (más de un mes)
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+    
+    await Expense.destroy({
+      where: {
+        userId: req.user.id,
+        tag: 'Fijo',
+        date: {
+          [Op.lt]: oneMonthAgo
+        }
+      }
+    });
+    
     const expenses = await Expense.findAll({
       where: whereClause,
       order: [['date', 'DESC']]
@@ -50,15 +64,10 @@ const getExpenses = async (req, res) => {
 // @access  Private
 const createExpense = async (req, res) => {
   try {
-    const { concept, amount, date, tag, isRecurring } = req.body;
+    const { concept, amount, date, tag } = req.body;
     
-    // Validar que si es un gasto recurrente, debe ser de tipo Fijo
-    if (isRecurring && tag !== 'Fijo') {
-      return res.status(400).json({
-        success: false,
-        message: 'Solo los gastos con etiqueta "Fijo" pueden ser recurrentes',
-      });
-    }
+    // Los gastos fijos son automáticamente recurrentes
+    const isRecurring = tag === 'Fijo';
     
     const expense = await Expense.create({
       userId: req.user.id,
@@ -66,7 +75,7 @@ const createExpense = async (req, res) => {
       amount,
       date: date || new Date(),
       tag: tag || 'Personal',
-      isRecurring: isRecurring || false,
+      isRecurring: isRecurring,
     });
     
     res.status(201).json({
