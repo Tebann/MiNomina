@@ -617,6 +617,14 @@ async function init() {
     btnGenerarRecurrentes.addEventListener('click', async () => {
       try {
         if (window.apiService && window.apiService.isAuthenticated()) {
+          // Primero obtenemos los gastos fijos del mes actual
+          const expensesResponse = await window.apiService.expense.getExpenses(
+            selectedYear, 
+            selectedMonth + 1,
+            'Fijo'
+          );
+          
+          // Luego generamos los gastos recurrentes
           const response = await window.apiService.expense.generateRecurringExpenses(
             selectedYear, 
             selectedMonth + 1
@@ -624,7 +632,25 @@ async function init() {
           
           if (response.success) {
             const count = response.data.length;
-            showMessage(`Se han generado ${count} gastos recurrentes para este mes.`);
+            let message = `Se han generado ${count} gastos recurrentes para este mes.`;
+            
+            // Si hay gastos fijos, mostrar un resumen
+            if (expensesResponse.success && expensesResponse.data.length > 0) {
+              const fixedExpenses = expensesResponse.data;
+              const totalFixed = fixedExpenses.reduce((sum, expense) => sum + expense.amount, 0);
+              
+              message += `\n\nResumen de Gastos Fijos del Mes:\n`;
+              message += `Total: $${Math.round(totalFixed).toLocaleString('en-US')}\n\n`;
+              
+              // Mostrar detalle de cada gasto fijo
+              fixedExpenses.forEach(expense => {
+                message += `- ${expense.concept}: $${Math.round(expense.amount).toLocaleString('en-US')}\n`;
+              });
+            } else {
+              message += `\n\nNo hay gastos fijos registrados para este mes.`;
+            }
+            
+            showMessage(message);
             await updateAll();
           }
         } else {
