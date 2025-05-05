@@ -1,5 +1,5 @@
 // API Service para conectar con el backend
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'http://localhost:3000/api';
 
 // Para pruebas locales con archivos HTML
 if (window.location.protocol === 'file:') {

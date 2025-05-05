@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Ocultar después de 5 segundos
             setTimeout(() => {
                 messageEl.style.display = 'none';
-            }, 5000);
+            }, 3000);
         } else if (errorDiv) {
             errorDiv.textContent = message;
             errorDiv.style.display = 'block';
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Ocultar después de 5 segundos
             setTimeout(() => {
                 errorDiv.style.display = 'none';
-            }, 5000);
+            }, 3000);
         }
     }
     

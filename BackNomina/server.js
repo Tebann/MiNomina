@@ -44,7 +44,7 @@ app.get('/', (req, res) => {
 app.use(errorHandler);
 
 // Puerto
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 // Probar conexión y sincronizar modelos con la base de datos
 testConnection().then(connected => {

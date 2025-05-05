@@ -18,7 +18,7 @@ function showAuthMessage(message, isError = false) {
   // Ocultar después de 5 segundos
   setTimeout(() => {
     messageEl.style.display = 'none';
-  }, 5000);
+  }, 3000);
 }
 
 // Función para mostrar el nombre del usuario logueado
