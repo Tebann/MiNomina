@@ -1,4 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Limpiar localStorage al cargar la página de login para evitar conflictos
+    localStorage.removeItem('userToken');
+    localStorage.removeItem('userData');
+    
     // Elementos del DOM
     const loginForm = document.getElementById('loginForm');
     const registerForm = document.getElementById('registerForm');
@@ -43,13 +47,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Verificar si ya hay una sesión activa
-    const userToken = localStorage.getItem('userToken');
-    if (userToken) {
-        // Redirigir a index.html
-        window.location.href = "index.html";
-        return;
-    }
+    // Ya no necesitamos verificar si hay una sesión activa
+    // porque limpiamos el localStorage al cargar la página
 
     // Configurar evento de login
     if (loginForm) {
