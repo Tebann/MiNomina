@@ -10,27 +10,22 @@
 </head>
 <body>
   <header>
-    <h1 class="title">Mi Nómina</h1>
+    <div class="logo-header">
+      <img class="logo-header" src="images/logo.png" alt="Mi Nómina Logo" class="logo">
+      <h1>Mi Nómina</h1>
+    </div>
     <div class="user-info">
       <span id="userInfo"></span>
       <button id="logoutBtn" class="btn-logout">Cerrar sesión</button>
     </div>
   </header>
   
-  <div class="actions-container">
-    <button id="btnGenerarWord" class="btn-word">Generar Cuenta de Cobro</button>
-    <button id="btnGenerarRecurrentes" class="btn-recurring">Generar Gastos Recurrentes</button>
-  </div>
-  
   <div class="curriculum-container" id="curriculum" style="display: none;">
     <!-- Columna 1: Resumen + Registrar día -->
     <div class="column">
       <div class="card-container">
         <div class="column-header">
-          Resumen del mes –
-          <button id="prevMonth">&lt;</button>
-          <span id="currentMonth"></span>
-          <button id="nextMonth">&gt;</button>
+          Resumen del mes
         </div>
         <div class="card card-ingresos">
           <div class="card-name">Ingresos</div>
@@ -74,7 +69,11 @@
     <!-- Columna 2: Calendario + Días trabajados recientes -->
     <div class="column">
       <div class="card-container">
-        <div class="column-header">Calendario</div>
+        <div class="column-header">Calendario
+          <button id="prevMonth">&lt;</button>
+          <span id="currentMonth"></span>
+          <button id="nextMonth">&gt;</button>
+        </div>
         <div class="calendario"></div>
       </div>
       <div class="card-container">
@@ -123,6 +122,11 @@
         <button id="modalNo">No</button>
       </div>
     </div>
+  </div>
+
+  <div class="actions-container">
+    <button id="btnGenerarWord" class="btn-word">Generar Cuenta de Cobro</button>
+    <button id="btnGenerarRecurrentes" class="btn-recurring">Generar Gastos Recurrentes</button>
   </div>
 
   <script src="js/api.js" defer></script>
