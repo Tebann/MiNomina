@@ -6,6 +6,7 @@
   --color-optionall: #01161e;
   --bg-colorl:       #f9f6ef;
   --column-headerl:  #f9f6ef;
+  --ref-text:      #0035c6;
 }
 
 * {
@@ -16,14 +17,7 @@
 
 body {
   background-color: var(--bg-colorl);
-}
-
-.father{
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  max-height: 110vh;
-  overflow-y: hidden;
+  padding: 20px;
 }
 
 .title {
@@ -34,33 +28,14 @@ body {
 
 .curriculum-container {
   display: flex;
+  overflow-x: auto;
   padding: 20px 0;
 }
 
 .column {
-  flex: 1;
   min-width: 250px;
+  width: 450px;
   margin: 0 30px;
-  display: flex;
-  flex-direction: column;
-  min-height: 704px;
-  overflow-y: hidden;
-}
-
-.column > * {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.column-first-child {
-  flex: 1;
-  min-width: 250px;
-  margin: 0 30px;
-  display: flex;
-  flex-direction: column;
-  min-height: 704px;
-  overflow-y: hidden;
 }
 
 .column-header {
@@ -84,25 +59,6 @@ body {
   padding: 0 8px;
 }
 
-.card {
-  background-color: #f9f6ef;
-  border-radius: 8px;
-  padding: 12px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
-  transition: transform 0.3s;
-}
-
-.login-container {
-  background-color: var(--column-headerl);
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  border: 2px solid #000;
-  max-width: 400px;
-  margin: 30vh auto 0;
-  align-items: center;
-}
-
 .card-container {
   background-color: var(--column-headerl);
   padding: 15px;
@@ -112,7 +68,7 @@ body {
   border: 2px solid #000;
 }
 
-.card-list {
+.card {
   background-color: #f9f6ef;
   border-radius: 8px;
   padding: 12px;
@@ -120,29 +76,13 @@ body {
   box-shadow: 0 3px 8px rgba(0,0,0,0.08);
   transition: transform 0.3s;
 }
-
-.card-list:hover {
-  transform: translateY(-3px);
-}
-
 .card:hover {
   transform: translateY(-3px);
 }
 
-.card-ingresos { 
-  background-color: var(--color-ingresosl);
-  margin-bottom: 15px; 
-}
-
-.card-gastos   { 
-  background-color: var(--color-gastosl);
-  margin-bottom: 15px; 
-}
-
-.card-balance  { 
-  background-color: var(--color-balancel);
-  margin-bottom: 15px;
-}
+.card-ingresos { background-color: var(--color-ingresosl); }
+.card-gastos   { background-color: var(--color-gastosl); }
+.card-balance  { background-color: var(--color-balancel); }
 
 .card-name {
   font-size: 1rem;
@@ -154,49 +94,22 @@ body {
 }
 
 /* Formularios */
-
-.login-form {
-  display: flex;
-  flex-direction: column;
-}
-
-.login-form input,
-.card-form select{
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 15px;
-  padding: 8px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-.login-form button {
-  background: #101113;
-  color: #fff;
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
 .card-form form {
   display: flex;
   flex-direction: column;
+  gap: 10px;
 }
 .card-form input,
-.card-form select {
+.card-form select,
+.card-form button {
   padding: 8px;
-  border-radius: 6px;
+  border-radius: 4px;
   border: 1px solid #ccc;
-  margin-bottom: 15px;
 }
 .card-form button {
   background: #101113;
   color: #fff;
   cursor: pointer;
-  padding: 8px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
 }
 
 /* Calendario */
@@ -228,6 +141,13 @@ body {
   padding: 20px;
   border-radius: 8px;
   text-align: center;
+  max-width: 80%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.modal p {
+  white-space: pre-line;
+  text-align: left;
 }
 .modal-buttons {
   margin-top: 15px;
@@ -254,11 +174,6 @@ body {
   background: var(--color-optionall);
 }
 
-.badge.pagado {
-  background: var(--color-ingresosl);
-  color: var(--color-optionall)
-}
-
 .card {
   position: relative;                /* para posicionar el botón */
   overflow: hidden;
@@ -269,12 +184,10 @@ body {
   transition: filter 0.3s;
 }
 
-/* BOTONES */
 /* Botón Eliminar estilizado */
-
 .btn-delete {
   position: absolute;
-  top: 50%; left: 84%;
+  top: 50%; left: 50%;
   transform: translate(-50%, -50%) scale(0.9);
   opacity: 0;
   padding: 8px 16px;
@@ -293,110 +206,282 @@ body {
   z-index: 2;
 }
 
-/* Botón Pay estilizado */
-.btn-pay {
-  position: absolute;
-  top: 50%; left: 57%;
-  transform: translate(-50%, -50%) scale(0.9);
-  opacity: 0;
-  padding: 8px 16px;
-  background: var(--color-ingresosl);
-  color: #01161e;
-  border: none;
-  border-radius: 12px; 
-  font-size: 0.85rem;
-  font-weight: 600;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  cursor: pointer;
-  transition: 
-    opacity 0.3s ease, 
-    transform 0.2s ease, 
-    background 0.2s ease;
-  z-index: 2;
-}
-
-/* Mostrar y animar al hacer hover */
-.card:hover .btn-delete,
-.card:hover .btn-pay {
+/* Mostrar y animar al hacer hover en la card */
+.card:hover .btn-delete {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
 }
 
-.card-list:hover .btn-delete,
-.card-list:hover .btn-pay {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
+/* Efecto hover en el botón */
+.btn-delete:hover {
+  background: #d53030;  /* un rojo ligeramente más oscuro */
 }
-
-/* Efecto hover en delete */
-.btn-delete:hover{
-  background: #d53030;
-}
-
-/* Efecto hover en pay */
-.btn-pay:hover {
-  background: #82d3a1;
-  color: white;
-}
-
 /* Efecto de desenfoque en el contenido de la tarjeta */
 .card:hover .card-content {
   filter: blur(2px);
 }
 
-/* Efecto de desenfoque en el contenido de la tarjeta */
-.card-list:hover .card-content {
-  filter: blur(2px);
+/* Botones de acción */
+.actions-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0 20px;
+  gap: 15px;
 }
 
-.btn-word {
-  display: block;
-  width: 100%;
-  padding: 8px;
+.btn-word, .btn-recurring {
+  flex: 1;
+  padding: 10px;
   background: #01161e;
   color: #fff;
   border: none;
   border-radius: 6px;
   font-weight: 600;
-  cursor: pointer;  
+  cursor: pointer;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   transition: background 0.2s;
 }
 
 .btn-word:hover {
   background: #c2ffd9;
-  color: #01161e
+  color: #01161e;
 }
 
-/* ids para especificos */
-#cardDiasTrabajados{
-  min-height: 354px;
-  overflow-y: auto;
+.btn-recurring:hover {
+  background: #c9f9f2;
+  color: #01161e;
 }
 
-#cardGastosdelMes{
-  min-height: 461px;
-  overflow-y: auto;
+/* Etiquetas de gastos */
+.badge.tag-fijo {
+  background: #4a90e2;
 }
 
-#listaDiasTrabajados{
-  max-height: 200px;
+.badge.tag-imprevisto {
+  background: #e74c3c;
 }
 
-#listaGastos{
-  max-height: 200px;
+.badge.tag-personal {
+  background: #2ecc71;
 }
 
-/* scrikk bar style */
-::-webkit-scrollbar {
-  width: 0px;
+.badge.tag-recurring {
+  background: #17a2b8;
+  margin-left: 5px;
+}
+
+/* Estilos para autenticación */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-logout {
+  padding: 5px 10px;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.auth-container {
+  max-width: 500px;
+  margin: 0 auto 30px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.logo-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo-header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  max-height: 80px;
+  padding: 10px;
+}
+
+.logo-header img {
+  max-width: 100px;
+  height: auto;
+  margin-right: 10px;
+}
+
+.logo-header h1 {
+  font-size:calc(0.5rem + 1vw);
+  color: #01161e;
+
+  margin: 0;
+}
+
+.auth-logo {
+  max-width: 150px;
+  height: auto;
+}
+
+.auth-form-container {
+  margin-top: 20px;
+}
+
+.auth-form-container h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 10px;
+  background: #01161e;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.auth-message {
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+  display: none;
+}
+
+.error-message {
+  background: #ffebee;
+  color: #c62828;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.success-message {
+  background: #e8f5e9;
+  color: #2e7d32;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 10px;
 }
 
 .login-logo { 
   display: block;
-  margin: 0 auto auto;
-  max-width: 100px;
+  margin: 0 auto 20px;
+  max-width: 150px;
   height: auto;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3)); /* sombra que sigue la silueta */
 }
 
+.login-container{
+  /*alinear al centro*/
+  margin-top: 10vh;
+  max-width: 450px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.auth-logo {
+  display: block;
+  margin: 0 auto 20px;
+  max-width: 150px;
+  height: auto;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.auth-message {
+  display: none;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+
+.auth-form-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #01161e;
+}
+
+.loginText{
+  text-align: center;
+  margin-top: 20px;
+  font-size: 1rem;
+  color: var(--color-optionall);
+}
+
+.loginText a{
+  color: var(--ref-text);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.btn-primary {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background: #01161e;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
+  background: #c2ffd9;
+  color: #01161e;
+}
+
+.error-text {
+  color: #ff4848;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}

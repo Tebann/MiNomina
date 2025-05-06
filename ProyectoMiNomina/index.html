@@ -1,39 +1,31 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <script>
-    (async function verificarSesion() {
-      try {
-        const response = await fetch("http://localhost:3000/verificar-sesion", {
-          credentials: "include"
-        });
-  
-        if (!response.ok) {
-          window.location.href = "login.html";
-        }
-      } catch (err) {
-        console.error("No se pudo verificar la sesión:", err);
-        window.location.href = "login.html";
-      }
-    })();
-  </script>  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mi Nómina</title>
+  <title>Panel Principal - Mi Nómina</title>
   <link rel="stylesheet" href="css/styles.css"/>
+  <link rel="icon" href="images/logo.png" type="image/png">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-
-  <section class="father">
-    <h1 class="title">Mi Nómina</h1>
-  <div class="curriculum-container" id="curriculum">
-
+  <header>
+    <div class="logo-header">
+      <img class="logo-header" src="images/logo.png" alt="Mi Nómina Logo" class="logo">
+      <h1>Mi Nómina</h1>
+    </div>
+    <div class="user-info">
+      <span id="userInfo"></span>
+      <button id="logoutBtn" class="btn-logout">Cerrar sesión</button>
+    </div>
+  </header>
+  
+  <div class="curriculum-container" id="curriculum" style="display: none;">
     <!-- Columna 1: Resumen + Registrar día -->
-    <div class="column-first-child">
+    <div class="column">
       <div class="card-container">
         <div class="column-header">
-          Resumen del mes 
+          Resumen del mes
         </div>
         <div class="card card-ingresos">
           <div class="card-name">Ingresos</div>
@@ -50,7 +42,6 @@
           <div class="card-name">$<span id="balanceMes">0</span></div>
           <div class="card-code" id="balanceCode">Ahorro</div>
         </div>
-        <button id="btnGenerarWord" class="btn-word">Generar Cuenta de Cobro</button>
       </div>
       <div class="card-container">
         <div class="column-header">Registrar día trabajado</div>
@@ -69,7 +60,7 @@
               <input type="checkbox" id="esFestivo" />
               Día festivo
             </label>
-            <button id="btnGenerarWord" class="btn-word" type="submit">Registrar día</button>
+            <button type="submit">Registrar día</button>
           </form>
         </div>
       </div>
@@ -78,15 +69,14 @@
     <!-- Columna 2: Calendario + Días trabajados recientes -->
     <div class="column">
       <div class="card-container">
-        <div class="column-header">
-          Calendario
+        <div class="column-header">Calendario
           <button id="prevMonth">&lt;</button>
           <span id="currentMonth"></span>
           <button id="nextMonth">&gt;</button>
         </div>
         <div class="calendario"></div>
       </div>
-      <div class="card-container" id="cardDiasTrabajados">
+      <div class="card-container">
         <div class="column-header">Días Trabajados Recientes</div>
         <div id="listaDiasTrabajados"></div>
       </div>
@@ -98,22 +88,29 @@
         <div class="column-header">Registrar Gastos</div>
         <div class="card card-form">
           <form id="registroGastoForm">
-            <label class="input-container"></label>
-              <input type="text" id="conceptoGasto" placeholder="Concepto" required />
+            <label>Concepto:
+              <input type="text" id="conceptoGasto" required />
             </label>
-            <label>
-              <input type="number" id="valorGasto" placeholder="Valor" required />
+            <label>Valor:
+              <input type="number" id="valorGasto" min="0.01" step="0.01" required />
             </label>
-            <button id="btnGenerarWord" class="btn-word" type="submit" >Registrar Gasto</button>
+            <label>Etiqueta:
+              <select id="tagGasto" required>
+                <option value="Personal">Personal</option>
+                <option value="Fijo">Fijo</option>
+                <option value="Imprevisto">Imprevisto</option>
+              </select>
+            </label>
+            <!-- Los gastos fijos son automáticamente recurrentes -->
+            <button type="submit">Registrar Gasto</button>
           </form>
         </div>
       </div>
-      <div class="card-container" id="cardGastosdelMes">
+      <div class="card-container">
         <div class="column-header">Gastos del Mes</div>
         <div id="listaGastos"></div>
       </div>
     </div>
-
   </div>
 
   <!-- Modal genérico -->
@@ -127,9 +124,13 @@
     </div>
   </div>
 
-  <script src="js/app.js" defer></script>
+  <div class="actions-container">
+    <button id="btnGenerarWord" class="btn-word">Generar Cuenta de Cobro</button>
+    <button id="btnGenerarRecurrentes" class="btn-recurring">Generar Gastos Recurrentes</button>
+  </div>
 
-  </section>
-  
+  <script src="js/api.js" defer></script>
+  <script src="js/auth.js" defer></script>
+  <script src="js/app.js" defer></script>
 </body>
 </html>
