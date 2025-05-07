@@ -1,5 +1,5 @@
 // API Service para conectar con el backend
-const API_URL = 'minomina.onrender.com/api';
+const API_URL = 'https://minomina.onrender.com/api';
 
 // Para pruebas locales con archivos HTML
 if (window.location.protocol === 'file:') {
