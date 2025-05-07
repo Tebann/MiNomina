@@ -59,6 +59,27 @@ body {
   padding: 0 8px;
 }
 
+.card {
+  background-color: #f9f6ef;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+  transition: transform 0.3s;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: var(--column-headerl);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  border: 2px solid #000;
+  padding: 15px;
+  width: 450px;
+  border-radius: 10px;
+  margin: 30vh auto 0;
+}
+
 .card-container {
   background-color: var(--column-headerl);
   padding: 15px;
@@ -229,6 +250,10 @@ body {
   gap: 15px;
 }
 
+.btn-word {
+  display: block;
+  width: 100%;
+}
 .btn-word, .btn-recurring {
   flex: 1;
   padding: 10px;
