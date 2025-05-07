@@ -38,6 +38,23 @@ body {
   margin: 0 30px;
 }
 
+.column1 {
+  width: 450px;
+  margin-right: auto;
+  height: 100%;
+}
+
+.column2 {
+  width: 550px;
+  height: 100%;
+}
+
+.column3 {
+  width: 450px;
+  margin-left: auto;
+  height: 100%;
+}
+
 .column-header {
   background-color: var(--column-headerl);
   color: #000;
@@ -65,19 +82,6 @@ body {
   padding: 12px;
   box-shadow: 0 3px 8px rgba(0,0,0,0.08);
   transition: transform 0.3s;
-}
-
-.login-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  background-color: var(--column-headerl);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  border: 2px solid #000;
-  padding: 15px;
-  width: 450px;
-  border-radius: 10px;
-  margin: 30vh auto 0;
 }
 
 .card-container {
@@ -205,78 +209,6 @@ body {
   transition: filter 0.3s;
 }
 
-/* Botón Eliminar estilizado */
-.btn-delete {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%) scale(0.9);
-  opacity: 0;
-  padding: 8px 16px;
-  background: var(--color-gastosl);
-  color: #fff;
-  border: none;
-  border-radius: 12px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  cursor: pointer;
-  transition: 
-    opacity 0.3s ease, 
-    transform 0.2s ease, 
-    background 0.2s ease;
-  z-index: 2;
-}
-
-/* Mostrar y animar al hacer hover en la card */
-.card:hover .btn-delete {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-}
-
-/* Efecto hover en el botón */
-.btn-delete:hover {
-  background: #d53030;  /* un rojo ligeramente más oscuro */
-}
-/* Efecto de desenfoque en el contenido de la tarjeta */
-.card:hover .card-content {
-  filter: blur(2px);
-}
-
-/* Botones de acción */
-.actions-container {
-  display: flex;
-  justify-content: space-between;
-  margin: 10px 0 20px;
-  gap: 15px;
-}
-
-.btn-word {
-  display: block;
-  width: 100%;
-}
-.btn-word, .btn-recurring {
-  flex: 1;
-  padding: 10px;
-  background: #01161e;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  transition: background 0.2s;
-}
-
-.btn-word:hover {
-  background: #c2ffd9;
-  color: #01161e;
-}
-
-.btn-recurring:hover {
-  background: #c9f9f2;
-  color: #01161e;
-}
-
 /* Etiquetas de gastos */
 .badge.tag-fijo {
   background: #4a90e2;
@@ -315,14 +247,6 @@ header {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-}
-
-.auth-container {
-  max-width: 500px;
-  margin: 0 auto 30px;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .logo-container {
