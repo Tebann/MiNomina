@@ -1,5 +1,6 @@
 // API Service para conectar con el backend
-const API_URL = 'https://minomina.onrender.com/api';
+const API_URL = 'https://minomina.onrender.com/api'; //production
+// const API_URL = 'http://localhost:3000/api'; // localhost
 
 // Para pruebas locales con archivos HTML
 if (window.location.protocol === 'file:') {
