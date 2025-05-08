@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Panel Principal - Mi Nómina</title>
   <link rel="stylesheet" href="css/styles.css"/>
+  <link rel="stylesheet" href="css/bottons.css"/>
+  <link rel="stylesheet" href="css/expose.css"/>
   <link rel="icon" href="images/logo.png" type="image/png">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -16,13 +18,16 @@
     </div>
     <div class="user-info">
       <span id="userInfo"></span>
-      <button id="logoutBtn" class="btn-logout">Cerrar sesión</button>
+      <button id="logoutBtn" class="btn-logout">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out-icon lucide-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+      </button>
     </div>
   </header>
   
-  <div class="curriculum-container" id="curriculum" style="display: none;">
+  <div class="curriculum-container" id="curriculum">
+    <div class="curriculum-container1">
     <!-- Columna 1: Resumen + Registrar día -->
-    <div class="column">
+    <div class="column1">
       <div class="card-container">
         <div class="column-header">
           Resumen del mes
@@ -42,6 +47,7 @@
           <div class="card-name">$<span id="balanceMes">0</span></div>
           <div class="card-code" id="balanceCode">Ahorro</div>
         </div>
+        <button id="btnGenerarWord" class="btn-word">Generar Cuenta de Cobro</button>
       </div>
       <div class="card-container">
         <div class="column-header">Registrar día trabajado</div>
@@ -56,59 +62,78 @@
                 <option value="completo">Tiempo completo</option>
               </select>
             </label>
-            <label>
-              <input type="checkbox" id="esFestivo" />
+            <label class="checkbox-container">
+              <input class="custom-checkbox" checked="" type="checkbox" id="esFestivo">
               Día festivo
+              <span class="checkmark"></span>
             </label>
-            <button type="submit">Registrar día</button>
+            <button class="btn-word" type="submit">Registrar día</button>
           </form>
         </div>
       </div>
     </div>
+  </div>
 
     <!-- Columna 2: Calendario + Días trabajados recientes -->
-    <div class="column">
-      <div class="card-container">
-        <div class="column-header">Calendario
-          <button id="prevMonth">&lt;</button>
-          <span id="currentMonth"></span>
-          <button id="nextMonth">&gt;</button>
-        </div>
-        <div class="calendario"></div>
+<div class="curriculum-container2">
+  <div class="column2">
+    
+    <!-- Calendario -->
+    <div class="card-container">
+      <div class="column-header">
+        Calendario
+        <button id="prevMonth">&lt;</button>
+        <span id="currentMonth"></span>
+        <button id="nextMonth">&gt;</button>
       </div>
-      <div class="card-container">
-        <div class="column-header">Días Trabajados Recientes</div>
-        <div id="listaDiasTrabajados"></div>
+      <div class="calendario"></div>
+    </div>
+    
+    <!-- Días trabajados recientes -->
+    <div class="card-container-list-wrapper">
+      <div class="column-header-list">Días Trabajados Recientes</div>
+      <div class="card-container-list">
+        <div id="listaDiasTrabajados">
+          <!-- Aquí se insertan los días trabajados dinámicamente -->
+        </div>
       </div>
     </div>
 
+  </div>
+</div>
+
+
     <!-- Columna 3: Registrar Gastos + Listado de Gastos -->
-    <div class="column">
+    <div class="curriculum-container3">
+    <div class="column3">
       <div class="card-container">
         <div class="column-header">Registrar Gastos</div>
         <div class="card card-form">
           <form id="registroGastoForm">
-            <label>Concepto:
+            <label>
               <input placeholder="Concepto" type="text" id="conceptoGasto" required />
             </label>
-            <label>Valor:
-              <input type="number" id="valorGasto" min="0.01" step="0.01" required />
+            <label>
+              <input placeholder="Valor" type="number" id="valorGasto" min="0.01" step="0.01" required />
             </label>
-            <label>Etiqueta:
+            <label>
               <select id="tagGasto" required>
-                <option value="Personal">Personal</option>
                 <option value="Fijo">Fijo</option>
+                <option value="Personal">Personal</option>
                 <option value="Imprevisto">Imprevisto</option>
               </select>
             </label>
             <!-- Los gastos fijos son automáticamente recurrentes -->
-            <button type="submit">Registrar Gasto</button>
+            <button class="btn-word" type="submit">Registrar Gasto</button>
           </form>
         </div>
+        <button id="btnGenerarRecurrentes" class="btn-word">Generar Gastos Recurrentes</button>
       </div>
-      <div class="card-container">
-        <div class="column-header">Gastos del Mes</div>
+      <div class="card-container-list-wrapper">
+        <div class="column-header-list">Gastos del Mes</div>
+        <div class="card-container-list">
         <div id="listaGastos"></div>
+      </div>
       </div>
     </div>
   </div>
@@ -122,11 +147,6 @@
         <button id="modalNo">No</button>
       </div>
     </div>
-  </div>
-
-  <div class="actions-container">
-    <button id="btnGenerarWord" class="btn-word">Generar Cuenta de Cobro</button>
-    <button id="btnGenerarRecurrentes" class="btn-recurring">Generar Gastos Recurrentes</button>
   </div>
 
   <script src="js/api.js" defer></script>

@@ -1,6 +1,6 @@
 // API Service para conectar con el backend
-const API_URL = 'https://minomina.onrender.com/api'; //production
-// const API_URL = 'http://localhost:3000/api'; // localhost
+//const API_URL = 'https://minomina.onrender.com/api'; //production
+const API_URL = 'http://localhost:3000/api'; // localhost
 
 // Para pruebas locales con archivos HTML
 if (window.location.protocol === 'file:') {
@@ -202,6 +202,13 @@ const expenseService = {
     return await fetchAPI('/expenses/generate-recurring', {
       method: 'POST',
       body: JSON.stringify({ year, month }),
+    });
+  },
+  
+  // Cambiar estado de pago de un gasto
+  toggleExpensePaid: async (id) => {
+    return await fetchAPI(`/expenses/${id}/toggle-paid`, {
+      method: 'PATCH',
     });
   },
 };
