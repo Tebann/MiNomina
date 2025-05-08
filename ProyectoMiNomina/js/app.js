@@ -388,6 +388,14 @@
         return;
       }
       
+      // Ordenar los gastos por tag: Fijo, Imprevisto, Personal
+      expenses.sort((a, b) => {
+        const tagOrder = { 'Fijo': 1, 'Imprevisto': 2, 'Personal': 3 };
+        const tagA = a.tag || 'Personal';
+        const tagB = b.tag || 'Personal';
+        return tagOrder[tagA] - tagOrder[tagB];
+      });
+      
       expenses.forEach(g => {
         const card = document.createElement('div');
         card.className = 'card-list';
@@ -398,6 +406,7 @@
         const valorStr = Number(valor).toLocaleString('en-US');
         const tag = g.tag || 'Personal';
         const isRecurring = g.isRecurring || false;
+        const isPaid = g.isPaid || false;
         
         // Añadir clase según la etiqueta
         let tagClass = '';
@@ -411,14 +420,46 @@
             ${concepto}
             <span class="badge ${tagClass}">${tag}</span>
             ${isRecurring ? '<span class="badge tag-recurring">Recurrente</span>' : ''}
+            ${isPaid ? '<span class="badge tag-paid">Pagado</span>' : ''}
           </div>
           <div>$${valorStr}</div>
         </div>
-        <button class="btn-delete">Eliminar?</button>
+        <div class="card-actions">
+          <button class="btn-paid">${isPaid ? 'No Pagado' : 'Pagado'}</button>
+          <button class="btn-delete">Eliminar?</button>
+        </div>
         `;
         
         listaGastosEl.appendChild(card);
         
+        // Botón para marcar como pagado/no pagado
+        card.querySelector('.btn-paid').addEventListener('click', async () => {
+          try {
+            if (window.apiService && window.apiService.isAuthenticated()) {
+              // Cambiar estado usando la API
+              await window.apiService.expense.toggleExpensePaid(g.id);
+              updateAll();
+            } else {
+              // Fallback a localStorage si no hay autenticación
+              const gastos = JSON.parse(localStorage.getItem('gastos') || '[]');
+              const index = gastos.findIndex(item => 
+                (item.id === g.id) || 
+                (item.idx === g.idx && item.concept === g.concept && item.amount === g.amount)
+              );
+              
+              if (index !== -1) {
+                gastos[index].isPaid = !gastos[index].isPaid;
+                localStorage.setItem('gastos', JSON.stringify(gastos));
+                updateAll();
+              }
+            }
+          } catch (error) {
+            console.error('Error al cambiar estado de pago:', error);
+            showMessage('Error al cambiar estado de pago: ' + (error.message || 'Error desconocido'));
+          }
+        });
+        
+        // Botón para eliminar
         card.querySelector('.btn-delete').addEventListener('click', () => {
           showConfirm(
             `¿Eliminar gasto "${concepto}"?`,

@@ -38,6 +38,11 @@ const Expense = sequelize.define('Expense', {
     defaultValue: false,
     comment: 'Indica si el gasto se repite mensualmente (solo para gastos fijos)'
   },
+  isPaid: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+    comment: 'Indica si el gasto ya ha sido pagado'
+  },
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false,

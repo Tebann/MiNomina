@@ -26,23 +26,12 @@ const getExpenses = async (req, res) => {
       whereClause.tag = tag;
     }
     
-    // Eliminar gastos fijos antiguos (más de un mes)
-    const oneMonthAgo = new Date();
-    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
-    
-    await Expense.destroy({
-      where: {
-        userId: req.user.id,
-        tag: 'Fijo',
-        date: {
-          [Op.lt]: oneMonthAgo
-        }
-      }
-    });
-    
     const expenses = await Expense.findAll({
       where: whereClause,
-      order: [['date', 'DESC']]
+      order: [
+        ['tag', 'ASC'], // Primero Fijo, luego Imprevisto, luego Personal
+        ['date', 'DESC']
+      ]
     });
     
     res.json({
@@ -120,6 +109,38 @@ const deleteExpense = async (req, res) => {
       });
     }
     
+    // Si es un gasto fijo recurrente, eliminar también los gastos futuros
+    if (expense.tag === 'Fijo' && expense.isRecurring) {
+      const expenseDate = new Date(expense.date);
+      const currentDate = new Date();
+      
+      // Si el gasto es del mes actual o anterior, eliminar solo los gastos futuros
+      if (expenseDate <= currentDate) {
+        // Eliminar gastos futuros con el mismo concepto, monto y etiqueta
+        await Expense.destroy({
+          where: {
+            userId: req.user.id,
+            concept: expense.concept,
+            amount: expense.amount,
+            tag: 'Fijo',
+            isRecurring: true,
+            date: {
+              [Op.gt]: expense.date // Fechas posteriores a la del gasto actual
+            }
+          }
+        });
+        
+        // Eliminar el gasto actual
+        await expense.destroy();
+        
+        return res.json({
+          success: true,
+          message: 'Gasto fijo eliminado junto con sus recurrencias futuras',
+        });
+      }
+    }
+    
+    // Para gastos no recurrentes o si no aplica la lógica anterior
     await expense.destroy();
     
     res.json({
@@ -222,12 +243,26 @@ const generateRecurringExpenses = async (req, res) => {
       });
     }
     
-    // Obtener todos los gastos fijos recurrentes del usuario
-    const recurringExpenses = await Expense.findAll({
+    // Obtener todos los gastos fijos recurrentes del usuario (de cualquier mes)
+    const allRecurringExpenses = await Expense.findAll({
       where: {
         userId: req.user.id,
         tag: 'Fijo',
         isRecurring: true
+      },
+      order: [['date', 'ASC']] // Ordenar por fecha para obtener los más antiguos primero
+    });
+    
+    // Agrupar gastos recurrentes por concepto y monto para identificar gastos únicos
+    const uniqueRecurringExpenses = {};
+    
+    allRecurringExpenses.forEach(expense => {
+      const key = `${expense.concept}-${expense.amount}`;
+      
+      // Si ya existe este gasto en el mapa, solo actualizar si este es más reciente
+      if (!uniqueRecurringExpenses[key] || 
+          new Date(expense.date) > new Date(uniqueRecurringExpenses[key].date)) {
+        uniqueRecurringExpenses[key] = expense;
       }
     });
     
@@ -249,7 +284,10 @@ const generateRecurringExpenses = async (req, res) => {
     // Crear nuevos gastos recurrentes para el mes solicitado
     const newExpenses = [];
     
-    for (const expense of recurringExpenses) {
+    // Usar los gastos únicos identificados
+    for (const key in uniqueRecurringExpenses) {
+      const expense = uniqueRecurringExpenses[key];
+      
       // Verificar si ya existe un gasto similar en el mes solicitado
       const exists = existingExpenses.some(e => 
         e.concept === expense.concept && 
@@ -257,14 +295,19 @@ const generateRecurringExpenses = async (req, res) => {
         e.tag === expense.tag
       );
       
-      if (!exists) {
+      // Solo crear si no existe y si la fecha del gasto original es anterior al mes solicitado
+      const expenseDate = new Date(expense.date);
+      const isEligible = expenseDate <= endDate;
+      
+      if (!exists && isEligible) {
         const newExpense = await Expense.create({
           userId: req.user.id,
           concept: expense.concept,
           amount: expense.amount,
           date: targetDate,
           tag: 'Fijo',
-          isRecurring: true
+          isRecurring: true,
+          isPaid: false // Nuevo gasto, no pagado por defecto
         });
         
         newExpenses.push(newExpense);
@@ -285,10 +328,51 @@ const generateRecurringExpenses = async (req, res) => {
   }
 };
 
+// @desc    Cambiar estado de pago de un gasto
+// @route   PATCH /api/expenses/:id/toggle-paid
+// @access  Private
+const toggleExpensePaid = async (req, res) => {
+  try {
+    const expense = await Expense.findByPk(req.params.id);
+    
+    if (!expense) {
+      return res.status(404).json({
+        success: false,
+        message: 'Gasto no encontrado',
+      });
+    }
+    
+    // Verificar que el gasto pertenece al usuario
+    if (expense.userId !== req.user.id) {
+      return res.status(401).json({
+        success: false,
+        message: 'No autorizado',
+      });
+    }
+    
+    // Cambiar el estado de pago
+    expense.isPaid = !expense.isPaid;
+    await expense.save();
+    
+    res.json({
+      success: true,
+      message: expense.isPaid ? 'Gasto marcado como pagado' : 'Gasto marcado como no pagado',
+      data: expense,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error al cambiar estado de pago',
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getExpenses,
   createExpense,
   deleteExpense,
   getExpensesSummary,
   generateRecurringExpenses,
+  toggleExpensePaid,
 };
