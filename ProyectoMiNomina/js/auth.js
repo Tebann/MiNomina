@@ -24,7 +24,7 @@ function showAuthMessage(message, isError = false) {
 // Función para mostrar el nombre del usuario logueado
 function updateUserInfo(user) {
   if (user && userInfoEl) {
-    userInfoEl.textContent = `Hola, ${user.name}`;
+    userInfoEl.textContent = `Hola, ${user.name}!`;
   }
 }
 
