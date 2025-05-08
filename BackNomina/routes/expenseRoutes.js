@@ -349,4 +349,108 @@ router.post('/generate-recurring', protect, generateRecurringExpenses);
  */
 router.patch('/:id/toggle-paid', protect, toggleExpensePaid);
 
+/**
+ * @swagger
+ * /api/expenses/{id}:
+ *   get:
+ *     summary: Obtener un gasto específico
+ *     description: Obtiene la información de un gasto específico por su ID
+ *     tags: [Expenses]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID del gasto a obtener
+ *     responses:
+ *       200:
+ *         description: Gasto obtenido exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/Expense'
+ *       401:
+ *         description: No autorizado
+ *       404:
+ *         description: Gasto no encontrado
+ *       500:
+ *         description: Error del servidor
+ */
+router.get('/:id', protect, getExpense);
+
+/**
+ * @swagger
+ * /api/expenses/{id}:
+ *   put:
+ *     summary: Actualizar un gasto
+ *     description: Actualiza la información de un gasto específico por su ID
+ *     tags: [Expenses]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID del gasto a actualizar
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               concept:
+ *                 type: string
+ *                 description: Concepto o descripción del gasto
+ *               amount:
+ *                 type: number
+ *                 format: float
+ *                 description: Monto del gasto
+ *               date:
+ *                 type: string
+ *                 format: date
+ *                 description: Fecha del gasto
+ *               tag:
+ *                 type: string
+ *                 enum: [Fijo, Imprevisto, Personal]
+ *                 description: Etiqueta del gasto
+ *               isRecurring:
+ *                 type: boolean
+ *                 description: Indica si el gasto es recurrente mensualmente
+ *               isPaid:
+ *                 type: boolean
+ *                 description: Indica si el gasto ha sido pagado
+ *     responses:
+ *       200:
+ *         description: Gasto actualizado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/Expense'
+ *       400:
+ *         description: Datos inválidos
+ *       401:
+ *         description: No autorizado
+ *       404:
+ *         description: Gasto no encontrado
+ *       500:
+ *         description: Error del servidor
+ */
+router.put('/:id', protect, updateExpense);
+
 module.exports = router;

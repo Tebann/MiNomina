@@ -380,9 +380,101 @@ const toggleExpensePaid = async (req, res) => {
   }
 };
 
+// @desc    Obtener un gasto específico
+// @route   GET /api/expenses/:id
+// @access  Private
+const getExpense = async (req, res) => {
+  try {
+    const expense = await Expense.findByPk(req.params.id);
+    
+    if (!expense) {
+      return res.status(404).json({
+        success: false,
+        message: 'Gasto no encontrado',
+      });
+    }
+    
+    // Verificar que el gasto pertenece al usuario
+    if (expense.userId !== req.user.id) {
+      return res.status(401).json({
+        success: false,
+        message: 'No autorizado',
+      });
+    }
+    
+    res.json({
+      success: true,
+      data: expense,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error al obtener gasto',
+      error: error.message,
+    });
+  }
+};
+
+// @desc    Actualizar un gasto
+// @route   PUT /api/expenses/:id
+// @access  Private
+const updateExpense = async (req, res) => {
+  try {
+    const expense = await Expense.findByPk(req.params.id);
+    
+    if (!expense) {
+      return res.status(404).json({
+        success: false,
+        message: 'Gasto no encontrado',
+      });
+    }
+    
+    // Verificar que el gasto pertenece al usuario
+    if (expense.userId !== req.user.id) {
+      return res.status(401).json({
+        success: false,
+        message: 'No autorizado',
+      });
+    }
+    
+    // Actualizar solo los campos proporcionados
+    const { concept, amount, date, tag, isRecurring, isPaid } = req.body;
+    
+    if (concept !== undefined) expense.concept = concept;
+    if (amount !== undefined) expense.amount = amount;
+    if (date !== undefined) expense.date = date;
+    if (tag !== undefined) expense.tag = tag;
+    if (isRecurring !== undefined) expense.isRecurring = isRecurring;
+    if (isPaid !== undefined) expense.isPaid = isPaid;
+    
+    await expense.save();
+    
+    res.json({
+      success: true,
+      message: 'Gasto actualizado exitosamente',
+      data: expense,
+    });
+  } catch (error) {
+    if (error.name === 'SequelizeValidationError') {
+      return res.status(400).json({
+        success: false,
+        message: error.errors.map(e => e.message).join(', '),
+      });
+    }
+    
+    res.status(500).json({
+      success: false,
+      message: 'Error al actualizar gasto',
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getExpenses,
+  getExpense,
   createExpense,
+  updateExpense,
   deleteExpense,
   getExpensesSummary,
   generateRecurringExpenses,
