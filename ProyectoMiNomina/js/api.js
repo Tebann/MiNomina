@@ -208,22 +208,9 @@ const expenseService = {
   // Cambiar estado de pago de un gasto
   toggleExpensePaid: async (id) => {
     try {
-      // Primero obtenemos el gasto actual para conocer su estado
-      const response = await fetchAPI(`/expenses/${id}`);
-      if (!response.success || !response.data) {
-        throw new Error('No se pudo obtener información del gasto');
-      }
-      
-      // Invertimos el estado de pago
-      const currentExpense = response.data;
-      const newPaidStatus = !currentExpense.isPaid;
-      
-      // Actualizamos el gasto con el nuevo estado
-      return await fetchAPI(`/expenses/${id}`, {
-        method: 'PUT',
-        body: JSON.stringify({
-          isPaid: newPaidStatus
-        }),
+      // Usamos el endpoint original pero con POST en lugar de PATCH
+      return await fetchAPI(`/expenses/${id}/toggle-paid`, {
+        method: 'POST',
       });
     } catch (error) {
       console.error('Error al cambiar estado de pago:', error);

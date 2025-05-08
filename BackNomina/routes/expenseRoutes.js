@@ -313,8 +313,47 @@ router.post('/generate-recurring', protect, generateRecurringExpenses);
 /**
  * @swagger
  * /api/expenses/{id}/toggle-paid:
- *   patch:
+ *   post:
  *     summary: Cambiar estado de pago de un gasto
+ *     description: Cambia el estado de pago de un gasto (pagado/no pagado)
+ *     tags: [Expenses]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID del gasto a modificar
+ *     responses:
+ *       200:
+ *         description: Estado de pago actualizado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   $ref: '#/components/schemas/Expense'
+ *       401:
+ *         description: No autorizado
+ *       404:
+ *         description: Gasto no encontrado
+ *       500:
+ *         description: Error del servidor
+ */
+router.post('/:id/toggle-paid', protect, toggleExpensePaid);
+
+/**
+ * @swagger
+ * /api/expenses/{id}/toggle-paid:
+ *   patch:
+ *     summary: Cambiar estado de pago de un gasto (método alternativo)
  *     description: Cambia el estado de pago de un gasto (pagado/no pagado)
  *     tags: [Expenses]
  *     security:
