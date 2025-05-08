@@ -7,6 +7,7 @@ const swaggerSpec = require('./config/swagger');
 const { errorHandler } = require('./middlewares/errorMiddleware');
 const { syncModels } = require('./connection/db/syncDB');
 const { testConnection } = require('./connection/db/database');
+const { applyPendingMigrations } = require('./migrations/migrationManager');
 
 // Importar rutas
 const userRoutes = require('./routes/userRoutes');
@@ -46,16 +47,30 @@ app.use(errorHandler);
 // Puerto
 const PORT = process.env.PORT || 3000;
 
-// Probar conexión y sincronizar modelos con la base de datos
-testConnection().then(connected => {
+// Probar conexión, aplicar migraciones y sincronizar modelos con la base de datos
+testConnection().then(async connected => {
   if (connected) {
-    syncModels().then(() => {
+    try {
+      // Cargar y ejecutar migraciones
+      console.log('Ejecutando migraciones...');
+      const migrations = [
+        require('./migrations/001_add_isPaid_to_expenses')
+      ];
+      await applyPendingMigrations(migrations);
+      console.log('Migraciones completadas');
+      
+      // Sincronizar modelos
+      await syncModels();
+      
       // Iniciar servidor
       app.listen(PORT, () => {
         console.log(`Servidor ejecutándose en el puerto ${PORT}`);
         console.log(`Documentación API: http://localhost:${PORT}/api-docs`);
       });
-    });
+    } catch (error) {
+      console.error('Error durante la inicialización:', error);
+      process.exit(1);
+    }
   } else {
     console.error('No se pudo conectar a la base de datos. Cerrando aplicación.');
     process.exit(1);
