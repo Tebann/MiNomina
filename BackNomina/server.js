@@ -56,11 +56,20 @@ testConnection().then(async connected => {
       const migrations = [
         require('./migrations/001_add_isPaid_to_expenses')
       ];
-      await applyPendingMigrations(migrations);
-      console.log('Migraciones completadas');
+      
+      try {
+        await applyPendingMigrations(migrations);
+        console.log('Migraciones completadas');
+      } catch (migrationError) {
+        console.warn('Advertencia: Hubo errores durante las migraciones, pero continuaremos con la inicialización:', migrationError.message);
+      }
       
       // Sincronizar modelos
-      await syncModels();
+      try {
+        await syncModels();
+      } catch (syncError) {
+        console.warn('Advertencia: Error al sincronizar modelos, pero continuaremos con la inicialización:', syncError.message);
+      }
       
       // Iniciar servidor
       app.listen(PORT, () => {
@@ -68,7 +77,7 @@ testConnection().then(async connected => {
         console.log(`Documentación API: http://localhost:${PORT}/api-docs`);
       });
     } catch (error) {
-      console.error('Error durante la inicialización:', error);
+      console.error('Error crítico durante la inicialización:', error);
       process.exit(1);
     }
   } else {

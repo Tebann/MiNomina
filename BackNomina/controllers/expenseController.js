@@ -26,12 +26,24 @@ const getExpenses = async (req, res) => {
       whereClause.tag = tag;
     }
     
+    // Definir un orden personalizado para las etiquetas
+    const tagOrder = {
+      'Fijo': 1,
+      'Personal': 2,
+      'Imprevisto': 3
+    };
+    
+    // Obtener los gastos
     const expenses = await Expense.findAll({
       where: whereClause,
       order: [
-        ['tag', 'ASC'], // Primero Fijo, luego Imprevisto, luego Personal
         ['date', 'DESC']
       ]
+    });
+    
+    // Ordenar los gastos por etiqueta según el orden personalizado
+    expenses.sort((a, b) => {
+      return tagOrder[a.tag] - tagOrder[b.tag];
     });
     
     res.json({
