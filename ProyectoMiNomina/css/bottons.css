@@ -1,11 +1,9 @@
-/* Botón Eliminar estilizado */
-.btn-delete {
+/* Botones de acción en tarjetas de gastos */
+.btn-delete, .btn-paid {
     position: absolute;
-    top: 50%; left: 85%;
     transform: translate(-50%, -50%) scale(0.9);
     opacity: 0;
     padding: 8px 16px;
-    background: var(--color-gastosl);
     color: #fff;
     border: none;
     border-radius: 12px;
@@ -20,15 +18,42 @@
     z-index: 2;
 }
 
+/* Posicionamiento de los botones */
+.btn-delete {
+    top: 50%; 
+    left: 85%;
+    background: var(--color-gastosl);
+}
+
+.btn-paid {
+    top: 50%; 
+    left: 65%;
+    background: var(--color-unpaid); /* Color naranja para "No pagado" por defecto */
+}
+
   /* Mostrar y animar al hacer hover en la card */
-.card-list:hover .btn-delete {
+.card-list:hover .btn-delete,
+.card-list:hover .btn-paid {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
 }
 
-/* Efecto hover en el botón */
+/* Efecto hover en los botones */
 .btn-delete:hover {
     background: #d53030;  /* un rojo ligeramente más oscuro */
+}
+
+.btn-paid:hover {
+    background: var(--color-unpaid-hover);  /* un naranja ligeramente más oscuro */
+}
+
+/* Estilo para botón de pagado cuando está pagado */
+.btn-paid.paid {
+    background: var(--color-paid);  /* verde */
+}
+
+.btn-paid.paid:hover {
+    background: var(--color-paid-hover);  /* verde más oscuro */
 }
 /* Efecto de desenfoque en el contenido de la tarjeta */
 .card-list:hover .card-content {

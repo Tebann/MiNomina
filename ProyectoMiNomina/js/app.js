@@ -424,10 +424,8 @@
           </div>
           <div>$${valorStr}</div>
         </div>
-        <div class="card-actions">
-          <button class="btn-paid">${isPaid ? 'No Pagado' : 'Pagado'}</button>
-          <button class="btn-delete">Eliminar?</button>
-        </div>
+        <button class="btn-paid ${isPaid ? 'paid' : ''}">${isPaid ? 'No Pagado' : 'Pagado'}</button>
+        <button class="btn-delete">Eliminar</button>
         `;
         
         listaGastosEl.appendChild(card);
