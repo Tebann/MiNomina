@@ -28,7 +28,7 @@
 .btn-paid {
     top: 50%; 
     left: 65%;
-    background: var(--color-unpaid); /* Color naranja para "No pagado" por defecto */
+    background: var(--color-paid); /* Color naranja para "No pagado" por defecto */
 }
 
   /* Mostrar y animar al hacer hover en la card */
@@ -44,16 +44,16 @@
 }
 
 .btn-paid:hover {
-    background: var(--color-unpaid-hover);  /* un naranja ligeramente más oscuro */
+    background: var(--color-paid-hover);  /* un naranja ligeramente más oscuro */
 }
 
 /* Estilo para botón de pagado cuando está pagado */
 .btn-paid.paid {
-    background: var(--color-paid);  /* verde */
+    background: var(--color-unpaid);  /* Naranja */
 }
 
 .btn-paid.paid:hover {
-    background: var(--color-paid-hover);  /* verde más oscuro */
+    background: var(--color-unpaid-hover);  /* naranja más oscuro */
 }
 /* Efecto de desenfoque en el contenido de la tarjeta */
 .card-list:hover .card-content {
