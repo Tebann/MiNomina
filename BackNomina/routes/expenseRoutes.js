@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 const {
   getExpenses,
+  getExpense,
   createExpense,
+  updateExpense,
   deleteExpense,
   getExpensesSummary,
   generateRecurringExpenses,
