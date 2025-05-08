@@ -309,7 +309,7 @@
       
       workDays.forEach(r => {
         const card = document.createElement('div');
-        card.className = 'card';
+        card.className = 'card-list';
         
         // Adaptar propiedades según el origen de los datos
         const fecha = r.date || r.fecha;
@@ -390,7 +390,7 @@
       
       expenses.forEach(g => {
         const card = document.createElement('div');
-        card.className = 'card';
+        card.className = 'card-list';
         
         // Adaptar propiedades según el origen de los datos
         const concepto = g.concept || g.concepto;

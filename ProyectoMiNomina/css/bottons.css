@@ -1,0 +1,88 @@
+/* Botón Eliminar estilizado */
+.btn-delete {
+    position: absolute;
+    top: 50%; left: 85%;
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0;
+    padding: 8px 16px;
+    background: var(--color-gastosl);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    cursor: pointer;
+    transition: 
+    opacity 0.3s ease, 
+    transform 0.2s ease, 
+    background 0.2s ease;
+    z-index: 2;
+}
+
+  /* Mostrar y animar al hacer hover en la card */
+.card-list:hover .btn-delete {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Efecto hover en el botón */
+.btn-delete:hover {
+    background: #d53030;  /* un rojo ligeramente más oscuro */
+}
+/* Efecto de desenfoque en el contenido de la tarjeta */
+.card-list:hover .card-content {
+    filter: blur(2px);
+}
+
+/* Botones de acción */
+.actions-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0 20px;
+    gap: 15px;
+}
+
+.btn-word, .btn-recurring {
+    width: 100%;
+    flex: 1;
+    padding: 10px;
+    background: #01161e;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: background 0.2s;
+}
+
+.btn-word:hover {
+    background: #c2ffd9;
+    color: #01161e;
+}
+
+.btn-recurring:hover {
+    background: #c9f9f2;
+    color: #01161e;
+}
+
+.btn-primary {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: #01161e;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: background 0.2s;
+}
+
+.btn-primary:hover {
+background: #c2ffd9;
+color: #01161e;
+}

@@ -6,6 +6,7 @@
   <title>Panel Principal - Mi Nómina</title>
   <link rel="stylesheet" href="css/styles.css"/>
   <link rel="stylesheet" href="css/bottons.css"/>
+  <link rel="stylesheet" href="css/expose.css"/>
   <link rel="icon" href="images/logo.png" type="image/png">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -21,7 +22,8 @@
     </div>
   </header>
   
-  <div class="curriculum-container" id="curriculum" style="display: none;">
+  <div class="curriculum-container" id="curriculum">
+    <div class="curriculum-container1">
     <!-- Columna 1: Resumen + Registrar día -->
     <div class="column1">
       <div class="card-container">
@@ -58,33 +60,49 @@
                 <option value="completo">Tiempo completo</option>
               </select>
             </label>
-            <label>
-              <input type="checkbox" id="esFestivo" />
+            <label class="checkbox-container">
+              <input class="custom-checkbox" checked="" type="checkbox" id="esFestivo">
               Día festivo
+              <span class="checkmark"></span>
             </label>
             <button class="btn-word" type="submit">Registrar día</button>
           </form>
         </div>
       </div>
     </div>
+  </div>
 
     <!-- Columna 2: Calendario + Días trabajados recientes -->
-    <div class="column2">
-      <div class="card-container">
-        <div class="column-header">Calendario
-          <button id="prevMonth">&lt;</button>
-          <span id="currentMonth"></span>
-          <button id="nextMonth">&gt;</button>
-        </div>
-        <div class="calendario"></div>
+<div class="curriculum-container2">
+  <div class="column2">
+    
+    <!-- Calendario -->
+    <div class="card-container">
+      <div class="column-header">
+        Calendario
+        <button id="prevMonth">&lt;</button>
+        <span id="currentMonth"></span>
+        <button id="nextMonth">&gt;</button>
       </div>
-      <div class="card-container">
-        <div class="column-header">Días Trabajados Recientes</div>
-        <div id="listaDiasTrabajados"></div>
+      <div class="calendario"></div>
+    </div>
+    
+    <!-- Días trabajados recientes -->
+    <div class="card-container-list-wrapper">
+      <div class="column-header-list">Días Trabajados Recientes</div>
+      <div class="card-container-list">
+        <div id="listaDiasTrabajados">
+          <!-- Aquí se insertan los días trabajados dinámicamente -->
+        </div>
       </div>
     </div>
 
+  </div>
+</div>
+
+
     <!-- Columna 3: Registrar Gastos + Listado de Gastos -->
+    <div class="curriculum-container3">
     <div class="column3">
       <div class="card-container">
         <div class="column-header">Registrar Gastos</div>
@@ -96,22 +114,24 @@
             <label>
               <input placeholder="Valor" type="number" id="valorGasto" min="0.01" step="0.01" required />
             </label>
-            <label>Etiqueta:
+            <label>
               <select id="tagGasto" required>
-                <option value="Personal">Personal</option>
                 <option value="Fijo">Fijo</option>
+                <option value="Personal">Personal</option>
                 <option value="Imprevisto">Imprevisto</option>
               </select>
             </label>
             <!-- Los gastos fijos son automáticamente recurrentes -->
-            <button type="submit">Registrar Gasto</button>
+            <button class="btn-word" type="submit">Registrar Gasto</button>
           </form>
         </div>
-        <button id="btnGenerarRecurrentes" class="btn-recurring">Generar Gastos Recurrentes</button>
+        <button id="btnGenerarRecurrentes" class="btn-word">Generar Gastos Recurrentes</button>
       </div>
-      <div class="card-container">
-        <div class="column-header">Gastos del Mes</div>
+      <div class="card-container-list-wrapper">
+        <div class="column-header-list">Gastos del Mes</div>
+        <div class="card-container-list">
         <div id="listaGastos"></div>
+      </div>
       </div>
     </div>
   </div>
