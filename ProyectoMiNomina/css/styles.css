@@ -7,6 +7,10 @@
   --bg-colorl:       #f9f6ef;
   --column-headerl:  #f9f6ef;
   --ref-text:      #0035c6;
+  --color-paid:    #2ecc71;
+  --color-paid-hover: #27ae60;
+  --color-unpaid:  #f39c12;
+  --color-unpaid-hover: #e67e22;
 }
 
 * {
@@ -341,6 +345,39 @@ body {
   margin-left: 5px;
 }
 
+.badge.tag-paid {
+  background: var(--color-paid);
+  margin-left: 5px;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.btn-paid {
+  background: #2ecc71;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  flex: 1;
+  margin-right: 5px;
+}
+
+.btn-delete {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  flex: 1;
+  margin-left: 5px;
+}
+
 /* Estilos para autenticación */
 header {
   display: flex;
@@ -355,12 +392,21 @@ header {
 }
 
 .btn-logout {
-  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
   background: #e74c3c;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.btn-logout:hover {
+  background: #c0392b;
+  transform: scale(1.05);
 }
 
 .logo-container {

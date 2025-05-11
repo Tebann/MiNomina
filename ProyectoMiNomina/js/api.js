@@ -204,6 +204,13 @@ const expenseService = {
       body: JSON.stringify({ year, month }),
     });
   },
+  
+  // Cambiar estado de pago de un gasto
+  toggleExpensePaid: async (id) => {
+    return await fetchAPI(`/expenses/${id}/toggle-paid`, {
+      method: 'PATCH',
+    });
+  },
 };
 
 // Exportar servicios

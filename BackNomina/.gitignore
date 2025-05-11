@@ -198,4 +198,5 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+#database
 *.BackNomina\data\minomina.sqlite
