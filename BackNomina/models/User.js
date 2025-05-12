@@ -49,6 +49,35 @@ const User = sequelize.define('User', {
   signature: {
     type: DataTypes.STRING,
     defaultValue: ''
+  },
+  // New profile fields
+  fullName: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  company: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  rut: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  companyEmail: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    validate: {
+      isEmail: { msg: 'Por favor ingrese un email de empresa válido' }
+    }
+  },
+  position: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  accountCreationDate: {
+    type: DataTypes.DATE,
+    allowNull: true,
+    defaultValue: DataTypes.NOW
   }
 }, {
   timestamps: true,

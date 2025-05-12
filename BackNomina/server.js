@@ -14,6 +14,7 @@ const userRoutes = require('./routes/userRoutes');
 const workDayRoutes = require('./routes/workDayRoutes');
 const expenseRoutes = require('./routes/expenseRoutes');
 const workShiftRoutes = require('./routes/workShiftRoutes');
+const userProfileRoutes = require('./routes/userProfileRoutes');
 
 // Inicializar Express
 const app = express();
@@ -28,6 +29,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/workdays', workDayRoutes);
 app.use('/api/expenses', expenseRoutes);
 app.use('/api/workshifts', workShiftRoutes);
+app.use('/api/profile', userProfileRoutes);
 
 // Documentación Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
@@ -54,7 +56,8 @@ testConnection().then(async connected => {
       // Cargar y ejecutar migraciones
       console.log('Ejecutando migraciones...');
       const migrations = [
-        require('./migrations/001_add_isPaid_to_expenses')
+        require('./migrations/001_add_isPaid_to_expenses'),
+        require('./migrations/002_add_user_profile_fields')
       ];
       
       try {
