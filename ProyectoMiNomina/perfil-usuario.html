@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mi Perfil - Mi Nómina</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <link rel="stylesheet" href="css/bottons.css"/>
+  <link rel="stylesheet" href="css/poppins.css"/>
+    <link rel="stylesheet" href="css/estilos-perfil.css"/>
+  <link rel="icon" href="images/logo.png" type="image/png">
+</head>
+<body>
+    
+  <header>
+    <div class="logo-header">
+      <img class="logo-header" src="images/logo.png" alt="Mi Nómina Logo" class="logo">
+      <h1>Mi Nómina</h1>
+    </div>
+    <div class="user-info">
+      <span id="userInfo"></span>
+      <button id="logoutBtn" class="btn-logout">Cerrar sesión</button>
+    </div>
+  </header>
+  <section class="login-container"></section>
+  <div class="profile-container">
+    <div class="profile-header">
+      <h2>Mi Perfil</h2>
+      <button id="btnVolver" class="btn-back">Volver al Panel</button>
+    </div>
+
+    <div class="profile-content">
+      <!-- Columna izquierda - Datos personales -->
+      <div class="profile-column">
+        <div class="profile-card">
+          <div class="profile-section-header">
+            <span>Datos Personales</span>
+            <button id="btnEditarPersonales" class="btn-edit">Editar</button>
+            <button id="btnGuardarPersonales" class="btn-save" style="display: none;">Guardar</button>
+            <button id="btnCancelarPersonales" class="btn-cancel" style="display: none;">Cancelar</button>
+          </div>
+          
+          <div id="datosPersonalesView" class="profile-data-view">
+            <div class="data-item">
+              <div class="data-label">Nombre Completo:</div>
+              <div class="data-value" id="nombreCompletoView">-</div>
+            </div>
+            <div class="data-item">
+              <div class="data-label">Nombre Personalizado:</div>
+              <div class="data-value" id="nombrePersonalizadoView">-</div>
+            </div>
+            <div class="data-item">
+              <div class="data-label">Número de Identificación:</div>
+              <div class="data-value" id="identificacionView">-</div>
+            </div>
+            <div class="data-item">
+              <div class="data-label">Correo Electrónico:</div>
+              <div class="data-value" id="correoView">-</div>
+            </div>
+          </div>
+          
+          <form id="formDatosPersonales" class="profile-data-edit" style="display: none;">
+            <div class="form-group">
+              <label for="nombreCompleto">Nombre Completo</label>
+              <input type="text" id="nombreCompleto" placeholder="Ingrese su nombre completo" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="nombrePersonalizado">Nombre Personalizado</label>
+              <input type="text" id="nombrePersonalizado" placeholder="¿Cómo prefieres que te llamemos?">
+            </div>
+            
+            <div class="form-group">
+              <label for="identificacion">Número de Identificación</label>
+              <input type="text" id="identificacion" placeholder="Ingrese su número de identificación" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="correo">Correo Electrónico</label>
+              <input type="email" id="correo" placeholder="Ingrese su correo electrónico" disabled>
+              <small>El correo no puede ser modificado</small>
+            </div>
+          </form>
+        </div>
+        
+        <div class="profile-card">
+          <div class="profile-section-header">
+            <span>Cambiar Contraseña</span>
+            <button id="btnEditarContrasena" class="btn-edit">Editar</button>
+            <button id="btnGuardarContrasena" class="btn-save" style="display: none;">Guardar</button>
+            <button id="btnCancelarContrasena" class="btn-cancel" style="display: none;">Cancelar</button>
+          </div>
+          
+          <div id="datosContrasenaView" class="profile-data-view">
+            <div class="data-item">
+              <div class="data-label">Contraseña:</div>
+              <div class="data-value">••••••••</div>
+            </div>
+            <div class="data-note">
+              Para cambiar tu contraseña, haz clic en "Editar"
+            </div>
+          </div>
+          
+          <form id="formCambiarContrasena" class="profile-data-edit" style="display: none;">
+            <div class="form-group password-group">
+              <label for="contrasenaActual">Contraseña Actual</label>
+              <div class="password-input-container">
+                <input type="password" id="contrasenaActual" placeholder="Contraseña actual" required>
+                <button type="button" class="toggle-password" data-target="contrasenaActual">
+                  <img src="images/eye.svg" alt="Mostrar contraseña">
+                </button>
+              </div>
+            </div>
+            
+            <div class="form-group password-group">
+              <label for="nuevaContrasena">Nueva Contraseña</label>
+              <div class="password-input-container">
+                <input type="password" id="nuevaContrasena" placeholder="Nueva contraseña" required>
+                <button type="button" class="toggle-password" data-target="nuevaContrasena">
+                  <img src="images/eye.svg" alt="Mostrar contraseña">
+                </button>
+              </div>
+            </div>
+            
+            <div class="form-group password-group">
+              <label for="confirmarContrasena">Confirmar Contraseña</label>
+              <div class="password-input-container">
+                <input type="password" id="confirmarContrasena" placeholder="Confirme su nueva contraseña" required>
+                <button type="button" class="toggle-password" data-target="confirmarContrasena">
+                  <img src="images/eye.svg" alt="Mostrar contraseña">
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      <!-- Columna derecha - Datos de empresa y firma -->
+      <div class="profile-column">
+        <div class="profile-card">
+          <div class="profile-section-header">
+            <span>Datos de Empresa</span>
+            <button id="btnEditarEmpresa" class="btn-edit">Editar</button>
+            <button id="btnGuardarEmpresa" class="btn-save" style="display: none;">Guardar</button>
+            <button id="btnCancelarEmpresa" class="btn-cancel" style="display: none;">Cancelar</button>
+          </div>
+          
+          <div id="datosEmpresaView" class="profile-data-view">
+            <div class="data-item">
+              <div class="data-label">Nombre de la Empresa:</div>
+              <div class="data-value" id="nombreEmpresaView">-</div>
+            </div>
+            <div class="data-item">
+              <div class="data-label">NIT de la Empresa:</div>
+              <div class="data-value" id="nitEmpresaView">-</div>
+            </div>
+          </div>
+          
+          <form id="formDatosEmpresa" class="profile-data-edit" style="display: none;">
+            <div class="form-group">
+              <label for="nombreEmpresa">Nombre de la Empresa</label>
+              <input type="text" id="nombreEmpresa" placeholder="Ingrese el nombre de su empresa">
+            </div>
+            
+            <div class="form-group">
+              <label for="nitEmpresa">NIT de la Empresa</label>
+              <input type="text" id="nitEmpresa" placeholder="Ingrese el NIT de su empresa">
+            </div>
+          </form>
+        </div>
+        
+        <div class="profile-card">
+          <div class="profile-section-header">
+            <span>Mi Firma Digital</span>
+            <button id="btnEditarFirma" class="btn-edit">Editar</button>
+            <button id="btnGuardarFirma" class="btn-save" style="display: none;">Guardar</button>
+            <button id="btnCancelarFirma" class="btn-cancel" style="display: none;">Cancelar</button>
+          </div>
+          
+          <div id="firmaView" class="profile-data-view">
+            <div class="signature-preview">
+              <img id="firmaImagenView" src="images/placeholder-signature.png" alt="Tu firma digital">
+            </div>
+            <div class="data-note" id="firmaNota">
+              No has cargado ninguna firma aún. Haz clic en "Editar" para añadir tu firma.
+            </div>
+          </div>
+          
+          <div id="firmaEdit" class="profile-data-edit" style="display: none;">
+            <div class="signature-preview">
+              <img id="firmaImagen" src="images/placeholder-signature.png" alt="Tu firma digital">
+            </div>
+            
+            <div class="signature-upload">
+              <label for="firmaArchivo" class="btn-upload">
+                Seleccionar Imagen
+                <input type="file" id="firmaArchivo" accept="image/png" style="display: none;">
+              </label>
+              <p class="signature-help">Sube una imagen PNG de tu firma sobre fondo transparente (máx. 2MB)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de confirmación -->
+  <div id="modalOverlay" class="modal-overlay">
+    <div class="modal">
+      <p id="modalText"></p>
+      <div class="modal-buttons">
+        <button id="modalYes">Sí</button>
+        <button id="modalNo">No</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <script src="js/api.js" defer></script>
+  <script src="js/auth.js" defer></script>
+  <script src="js/modules/userProfile.js" defer></script>
+</body>
+</html>
