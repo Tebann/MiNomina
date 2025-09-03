@@ -20,74 +20,56 @@ const { protect } = require('../middlewares/authMiddleware');
  *         - password
  *         - identification
  *       properties:
- *         id:
- *           type: integer
- *           description: ID único del usuario
- *         name:
- *           type: string
- *           description: Nombre completo del usuario
- *         email:
- *           type: string
- *           format: email
- *           description: Correo electrónico del usuario (único)
- *         password:
- *           type: string
- *           format: password
- *           description: Contraseña del usuario (mínimo 6 caracteres)
- *         identification:
- *           type: string
- *           description: Número de identificación del usuario
- *         companyName:
- *           type: string
- *           description: Nombre de la empresa para la cuenta de cobro
- *         companyNit:
- *           type: string
- *           description: NIT de la empresa para la cuenta de cobro
- *         companyCity:
- *           type: string
- *           description: Ciudad de la empresa para la cuenta de cobro
- *         signature:
- *           type: string
- *           description: URL o base64 de la firma del usuario
- *         createdAt:
- *           type: string
- *           format: date-time
- *           description: Fecha de creación del registro
- *         updatedAt:
- *           type: string
- *           format: date-time
- *           description: Fecha de última actualización del registro
+ *         id: { type: integer, description: ID único del usuario }
+ *         name: { type: string, description: Nombre completo del usuario }
+ *         email: { type: string, format: email, description: Correo electrónico del usuario }
+ *         password: { type: string, format: password, description: Contraseña del usuario }
+ *         identification: { type: string, description: Número de identificación del usuario }
+ *         companyName: { type: string, description: Nombre de la empresa }
+ *         companyNit: { type: string, description: NIT de la empresa }
+ *         companyCity: { type: string, description: Ciudad de la empresa }
+ *         signature: { type: string, description: Firma del usuario }
+ *         fullName: { type: string, description: Nombre completo extendido }
+ *         company: { type: string, description: Empresa del usuario }
+ *         rut: { type: string, description: RUT del usuario }
+ *         companyEmail: { type: string, format: email, description: Email de la empresa }
+ *         position: { type: string, description: Cargo del usuario }
+ *         accountCreationDate: { type: string, format: date-time, description: Fecha de creación }
+ *         createdAt: { type: string, format: date-time, description: Fecha de creación del registro }
+ *         updatedAt: { type: string, format: date-time, description: Fecha de actualización del registro }
  *     UserResponse:
  *       type: object
  *       properties:
- *         id:
- *           type: integer
- *           description: ID único del usuario
- *         name:
- *           type: string
- *           description: Nombre completo del usuario
- *         email:
- *           type: string
- *           format: email
- *           description: Correo electrónico del usuario
- *         identification:
- *           type: string
- *           description: Número de identificación del usuario
- *         companyName:
- *           type: string
- *           description: Nombre de la empresa para la cuenta de cobro
- *         companyNit:
- *           type: string
- *           description: NIT de la empresa para la cuenta de cobro
- *         companyCity:
- *           type: string
- *           description: Ciudad de la empresa para la cuenta de cobro
- *         signature:
- *           type: string
- *           description: URL o base64 de la firma del usuario
- *         token:
- *           type: string
- *           description: Token JWT para autenticación
+ *         id: { type: integer, description: ID único del usuario }
+ *         name: { type: string, description: Nombre completo del usuario }
+ *         email: { type: string, format: email, description: Correo electrónico del usuario }
+ *         identification: { type: string, description: Número de identificación del usuario }
+ *         companyName: { type: string, description: Nombre de la empresa }
+ *         companyNit: { type: string, description: NIT de la empresa }
+ *         companyCity: { type: string, description: Ciudad de la empresa }
+ *         signature: { type: string, description: Firma del usuario }
+ *         fullName: { type: string, description: Nombre completo extendido }
+ *         company: { type: string, description: Empresa del usuario }
+ *         rut: { type: string, description: RUT del usuario }
+ *         companyEmail: { type: string, format: email, description: Email de la empresa }
+ *         position: { type: string, description: Cargo del usuario }
+ *         accountCreationDate: { type: string, format: date-time, description: Fecha de creación }
+ *         token: { type: string, description: Token JWT para autenticación }
+ *     UserProfileUpdate:
+ *       type: object
+ *       properties:
+ *         name: { type: string, description: Nombre completo del usuario }
+ *         fullName: { type: string, description: Nombre completo extendido }
+ *         company: { type: string, description: Empresa del usuario }
+ *         rut: { type: string, description: RUT del usuario }
+ *         companyEmail: { type: string, format: email, description: Email de la empresa }
+ *         position: { type: string, description: Cargo del usuario }
+ *         identification: { type: string, description: Número de identificación }
+ *         companyName: { type: string, description: Nombre de la empresa }
+ *         companyNit: { type: string, description: NIT de la empresa }
+ *         companyCity: { type: string, description: Ciudad de la empresa }
+ *         signature: { type: string, description: Firma del usuario }
+ *         password: { type: string, format: password, description: Nueva contraseña }
  */
 
 /**
@@ -266,37 +248,7 @@ router.get('/profile', protect, getUserProfile);
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *                 description: Nombre completo del usuario
- *               email:
- *                 type: string
- *                 format: email
- *                 description: Correo electrónico del usuario
- *               password:
- *                 type: string
- *                 format: password
- *                 description: Nueva contraseña (opcional)
- *               identification:
- *                 type: string
- *                 description: Número de identificación del usuario
- *               company:
- *                 type: object
- *                 properties:
- *                   name:
- *                     type: string
- *                     description: Nombre de la empresa para la cuenta de cobro
- *                   nit:
- *                     type: string
- *                     description: NIT de la empresa para la cuenta de cobro
- *                   city:
- *                     type: string
- *                     description: Ciudad de la empresa para la cuenta de cobro
- *               signature:
- *                 type: string
- *                 description: URL o base64 de la firma del usuario
+ *             $ref: '#/components/schemas/UserProfileUpdate'
  *     responses:
  *       200:
  *         description: Perfil actualizado exitosamente
@@ -310,27 +262,13 @@ router.get('/profile', protect, getUserProfile);
  *                 data:
  *                   type: object
  *                   properties:
- *                     id:
- *                       type: integer
- *                     name:
- *                       type: string
- *                     email:
- *                       type: string
- *                     identification:
- *                       type: string
- *                     company:
- *                       type: object
- *                       properties:
- *                         name:
- *                           type: string
- *                         nit:
- *                           type: string
- *                         city:
- *                           type: string
- *                     signature:
- *                       type: string
+ *                     user:
+ *                       $ref: '#/components/schemas/UserResponse'
  *                     token:
  *                       type: string
+ *                       description: Nuevo token JWT con información actualizada
+ *                 message:
+ *                   type: string
  *       400:
  *         description: Datos inválidos
  *       401:
