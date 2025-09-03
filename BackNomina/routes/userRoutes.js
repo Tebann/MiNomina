@@ -20,62 +20,201 @@ const { protect } = require('../middlewares/authMiddleware');
  *         - password
  *         - identification
  *       properties:
- *         id: { type: integer, description: ID único del usuario }
- *         name: { type: string, description: Nombre completo del usuario }
- *         email: { type: string, format: email, description: Correo electrónico del usuario }
- *         password: { type: string, format: password, description: Contraseña del usuario }
- *         identification: { type: string, description: Número de identificación del usuario }
- *         companyName: { type: string, description: Nombre de la empresa }
- *         companyNit: { type: string, description: NIT de la empresa }
- *         companyCity: { type: string, description: Ciudad de la empresa }
- *         signature: { type: string, description: Firma del usuario }
- *         fullName: { type: string, description: Nombre completo extendido }
- *         company: { type: string, description: Empresa del usuario }
- *         rut: { type: string, description: RUT del usuario }
- *         companyEmail: { type: string, format: email, description: Email de la empresa }
- *         position: { type: string, description: Cargo del usuario }
- *         accountCreationDate: { type: string, format: date-time, description: Fecha de creación }
- *         createdAt: { type: string, format: date-time, description: Fecha de creación del registro }
- *         updatedAt: { type: string, format: date-time, description: Fecha de actualización del registro }
+ *         id:
+ *           type: integer
+ *           description: ID único del usuario
+ *         name:
+ *           type: string
+ *           description: Nombre completo del usuario
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: Correo electrónico del usuario (único)
+ *         password:
+ *           type: string
+ *           format: password
+ *           description: Contraseña del usuario (mínimo 6 caracteres)
+ *         identification:
+ *           type: string
+ *           description: Número de identificación del usuario
+ *         companyName:
+ *           type: string
+ *           description: Nombre de la empresa para la cuenta de cobro
+ *         companyNit:
+ *           type: string
+ *           description: NIT de la empresa para la cuenta de cobro
+ *         companyCity:
+ *           type: string
+ *           description: Ciudad de la empresa para la cuenta de cobro
+ *         signature:
+ *           type: string
+ *           description: URL o base64 de la firma del usuario
+ *         fullName:
+ *           type: string
+ *           description: Nombre completo extendido del usuario
+ *         company:
+ *           type: string
+ *           description: Nombre de la empresa del usuario
+ *         rut:
+ *           type: string
+ *           description: RUT del usuario
+ *         companyEmail:
+ *           type: string
+ *           format: email
+ *           description: Correo electrónico de la empresa
+ *         position:
+ *           type: string
+ *           description: Cargo o posición del usuario
+ *         accountCreationDate:
+ *           type: string
+ *           format: date-time
+ *           description: Fecha de creación de la cuenta
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: Fecha de creación del registro
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           description: Fecha de última actualización del registro
  *     UserResponse:
  *       type: object
  *       properties:
- *         id: { type: integer, description: ID único del usuario }
- *         name: { type: string, description: Nombre completo del usuario }
- *         email: { type: string, format: email, description: Correo electrónico del usuario }
- *         identification: { type: string, description: Número de identificación del usuario }
- *         companyName: { type: string, description: Nombre de la empresa }
- *         companyNit: { type: string, description: NIT de la empresa }
- *         companyCity: { type: string, description: Ciudad de la empresa }
- *         signature: { type: string, description: Firma del usuario }
- *         fullName: { type: string, description: Nombre completo extendido }
- *         company: { type: string, description: Empresa del usuario }
- *         rut: { type: string, description: RUT del usuario }
- *         companyEmail: { type: string, format: email, description: Email de la empresa }
- *         position: { type: string, description: Cargo del usuario }
- *         accountCreationDate: { type: string, format: date-time, description: Fecha de creación }
- *         token: { type: string, description: Token JWT para autenticación }
+ *         id:
+ *           type: integer
+ *           description: ID único del usuario
+ *         name:
+ *           type: string
+ *           description: Nombre completo del usuario
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: Correo electrónico del usuario
+ *         identification:
+ *           type: string
+ *           description: Número de identificación del usuario
+ *         companyName:
+ *           type: string
+ *           description: Nombre de la empresa para la cuenta de cobro
+ *         companyNit:
+ *           type: string
+ *           description: NIT de la empresa para la cuenta de cobro
+ *         companyCity:
+ *           type: string
+ *           description: Ciudad de la empresa para la cuenta de cobro
+ *         signature:
+ *           type: string
+ *           description: URL o base64 de la firma del usuario
+ *         fullName:
+ *           type: string
+ *           description: Nombre completo extendido del usuario
+ *         company:
+ *           type: string
+ *           description: Nombre de la empresa del usuario
+ *         rut:
+ *           type: string
+ *           description: RUT del usuario
+ *         companyEmail:
+ *           type: string
+ *           format: email
+ *           description: Correo electrónico de la empresa
+ *         position:
+ *           type: string
+ *           description: Cargo o posición del usuario
+ *         accountCreationDate:
+ *           type: string
+ *           format: date-time
+ *           description: Fecha de creación de la cuenta
+ *         token:
+ *           type: string
+ *           description: Token JWT para autenticación
  *     UserProfileUpdate:
  *       type: object
  *       properties:
- *         name: { type: string, description: Nombre completo del usuario }
- *         fullName: { type: string, description: Nombre completo extendido }
- *         company: { type: string, description: Empresa del usuario }
- *         rut: { type: string, description: RUT del usuario }
- *         companyEmail: { type: string, format: email, description: Email de la empresa }
- *         position: { type: string, description: Cargo del usuario }
- *         identification: { type: string, description: Número de identificación }
- *         companyName: { type: string, description: Nombre de la empresa }
- *         companyNit: { type: string, description: NIT de la empresa }
- *         companyCity: { type: string, description: Ciudad de la empresa }
- *         signature: { type: string, description: Firma del usuario }
- *         password: { type: string, format: password, description: Nueva contraseña }
+ *         name:
+ *           type: string
+ *           description: Nombre completo del usuario
+ *         fullName:
+ *           type: string
+ *           description: Nombre completo extendido del usuario
+ *         company:
+ *           type: string
+ *           description: Nombre de la empresa del usuario
+ *         rut:
+ *           type: string
+ *           description: RUT del usuario
+ *         companyEmail:
+ *           type: string
+ *           format: email
+ *           description: Correo electrónico de la empresa
+ *         position:
+ *           type: string
+ *           description: Cargo o posición del usuario
+ *         identification:
+ *           type: string
+ *           description: Número de identificación del usuario
+ *         companyName:
+ *           type: string
+ *           description: Nombre de la empresa para la cuenta de cobro
+ *         companyNit:
+ *           type: string
+ *           description: NIT de la empresa para la cuenta de cobro
+ *         companyCity:
+ *           type: string
+ *           description: Ciudad de la empresa para la cuenta de cobro
+ *         signature:
+ *           type: string
+ *           description: URL o base64 de la firma del usuario
+ *         password:
+ *           type: string
+ *           format: password
+ *           description: Nueva contraseña (opcional)
+ *     UserProfileUpdate:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: Nombre completo del usuario
+ *         fullName:
+ *           type: string
+ *           description: Nombre completo extendido del usuario
+ *         company:
+ *           type: string
+ *           description: Nombre de la empresa del usuario
+ *         rut:
+ *           type: string
+ *           description: RUT del usuario
+ *         companyEmail:
+ *           type: string
+ *           format: email
+ *           description: Correo electrónico de la empresa
+ *         position:
+ *           type: string
+ *           description: Cargo o posición del usuario
+ *         identification:
+ *           type: string
+ *           description: Número de identificación del usuario
+ *         companyName:
+ *           type: string
+ *           description: Nombre de la empresa para la cuenta de cobro
+ *         companyNit:
+ *           type: string
+ *           description: NIT de la empresa para la cuenta de cobro
+ *         companyCity:
+ *           type: string
+ *           description: Ciudad de la empresa para la cuenta de cobro
+ *         signature:
+ *           type: string
+ *           description: URL o base64 de la firma del usuario
+ *         password:
+ *           type: string
+ *           format: password
+ *           description: Nueva contraseña (opcional)
  */
 
 /**
  * @swagger
  * /api/users:
- *   post:
  *     summary: Registrar un nuevo usuario
  *     description: Crea una nueva cuenta de usuario con la información proporcionada
  *     tags: [Users]

@@ -1,6 +1,6 @@
 // API Service para conectar con el backend
-const API_URL = 'https://minomina.onrender.com/api'; //production
-//const API_URL = 'http://localhost:3000/api'; // localhost
+//const API_URL = 'https://minomina.onrender.com/api'; //production
+const API_URL = 'http://localhost:3000/api'; // localhost
 
 // Para pruebas locales con archivos HTML
 if (window.location.protocol === 'file:') {
@@ -124,6 +124,37 @@ const authService = {
   },
 };
 
+// Servicios de perfil de usuario
+const profileService = {
+  // Obtener perfil completo del usuario
+  getProfile: async () => {
+    return await fetchAPI('/profile');
+  },
+
+  // Actualizar perfil del usuario
+  updateProfile: async (profileData) => {
+    return await fetchAPI('/profile', {
+      method: 'PUT',
+      body: JSON.stringify(profileData),
+    });
+  },
+
+  // Cambiar contraseña
+  changePassword: async (passwordData) => {
+    return await fetchAPI('/profile/password', {
+      method: 'PUT',
+      body: JSON.stringify(passwordData),
+    });
+  },
+
+  // Logout del usuario
+  logout: async () => {
+    return await fetchAPI('/profile/logout', {
+      method: 'POST',
+    });
+  },
+};
+
 // Servicios de días trabajados
 const workDayService = {
   // Obtener días trabajados
@@ -224,5 +255,6 @@ window.apiService = {
   auth: authService,
   workDay: workDayService,
   expense: expenseService,
+  profile: profileService,
   isAuthenticated,
 };

@@ -165,14 +165,14 @@ function setupEventListeners() {
 // Load user profile data from API
 async function loadUserProfile() {
   try {
-    const response = await window.apiService.auth.getProfile();
-    
+    const response = await window.apiService.profile.getProfile();
+
     if (response.success) {
       userData = response.data;
-      
+
       // Update view with user data
       updateProfileView(userData);
-      
+
       // Fill form fields with user data
       fillFormFields(userData);
     }
@@ -273,27 +273,27 @@ async function savePersonalData() {
       name: elements.inputNombrePersonalizado.value,
       identification: elements.inputIdentificacion.value
     };
-    
-    const response = await window.apiService.auth.updateProfile(updatedData);
-    
+
+    const response = await window.apiService.profile.updateProfile(updatedData);
+
     if (response.success) {
       // Update local user data
       userData = response.data.user;
-      
+
       // Update localStorage
       localStorage.setItem('userData', JSON.stringify(userData));
-      
+
       // Update token if provided
       if (response.data.token) {
         localStorage.setItem('userToken', response.data.token);
       }
-      
+
       // Update view
       updateProfileView(userData);
-      
+
       // Switch back to view mode
       toggleEditMode('Personales', false);
-      
+
       // Show success message
       showNotification('Datos personales actualizados correctamente');
     }
@@ -310,27 +310,27 @@ async function saveCompanyData() {
       company: elements.inputNombreEmpresa.value,
       rut: elements.inputNitEmpresa.value
     };
-    
-    const response = await window.apiService.auth.updateProfile(updatedData);
-    
+
+    const response = await window.apiService.profile.updateProfile(updatedData);
+
     if (response.success) {
       // Update local user data
       userData = response.data.user;
-      
+
       // Update localStorage
       localStorage.setItem('userData', JSON.stringify(userData));
-      
+
       // Update token if provided
       if (response.data.token) {
         localStorage.setItem('userToken', response.data.token);
       }
-      
+
       // Update view
       updateProfileView(userData);
-      
+
       // Switch back to view mode
       toggleEditMode('Empresa', false);
-      
+
       // Show success message
       showNotification('Datos de empresa actualizados correctamente');
     }
@@ -346,43 +346,32 @@ async function savePassword() {
     const currentPassword = elements.inputContrasenaActual.value;
     const newPassword = elements.inputNuevaContrasena.value;
     const confirmPassword = elements.inputConfirmarContrasena.value;
-    
+
     // Validate passwords
     if (!currentPassword || !newPassword || !confirmPassword) {
       return showNotification('Por favor complete todos los campos', true);
     }
-    
+
     if (newPassword !== confirmPassword) {
       return showNotification('Las contraseñas no coinciden', true);
     }
-    
+
     if (newPassword.length < 6) {
       return showNotification('La contraseña debe tener al menos 6 caracteres', true);
     }
-    
-    // Send request to API
-    const response = await fetch(`${API_URL}/profile/password`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('userToken')}`
-      },
-      body: JSON.stringify({
-        currentPassword,
-        newPassword
-      })
+
+    // Send request using the profile service
+    const response = await window.apiService.profile.changePassword({
+      currentPassword,
+      newPassword
     });
-    
-    const data = await response.json();
-    
-    if (data.success) {
+
+    if (response.success) {
       // Switch back to view mode
       toggleEditMode('Contrasena', false);
-      
+
       // Show success message
       showNotification('Contraseña actualizada correctamente');
-    } else {
-      showNotification(data.message || 'Error al actualizar contraseña', true);
     }
   } catch (error) {
     console.error('Error al cambiar contraseña:', error);
@@ -421,35 +410,35 @@ async function saveSignature() {
   try {
     // Get base64 data from image
     const signatureData = elements.firmaImagen.src;
-    
+
     // Only save if it's not the placeholder
     if (signatureData.includes('placeholder-signature.png')) {
       showNotification('Por favor seleccione una imagen para su firma', true);
       return;
     }
-    
-    const response = await window.apiService.auth.updateProfile({
+
+    const response = await window.apiService.profile.updateProfile({
       signature: signatureData
     });
-    
+
     if (response.success) {
       // Update local user data
       userData = response.data.user;
-      
+
       // Update localStorage
       localStorage.setItem('userData', JSON.stringify(userData));
-      
+
       // Update token if provided
       if (response.data.token) {
         localStorage.setItem('userToken', response.data.token);
       }
-      
+
       // Update view
       updateProfileView(userData);
-      
+
       // Switch back to view mode
       toggleEditMode('Firma', false);
-      
+
       // Show success message
       showNotification('Firma actualizada correctamente');
     }
@@ -477,23 +466,18 @@ function togglePasswordVisibility(event) {
 // Logout user
 async function logout() {
   try {
-    // Call logout API
-    await fetch(`${API_URL}/profile/logout`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('userToken')}`
-      }
-    });
-    
+    // Call logout API using the profile service
+    await window.apiService.profile.logout();
+
     // Clear local storage
     localStorage.removeItem('userToken');
     localStorage.removeItem('userData');
-    
+
     // Redirect to login page
     window.location.href = 'login.html';
   } catch (error) {
     console.error('Error al cerrar sesión:', error);
-    
+
     // Even if there's an error, clear local storage and redirect
     localStorage.removeItem('userToken');
     localStorage.removeItem('userData');
@@ -530,9 +514,6 @@ function showNotification(message, isError = false) {
     notification.style.display = 'none';
   }, 3000);
 }
-
-// Get API URL from apiService
-const API_URL = 'http://localhost:3000/api';
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', init);
