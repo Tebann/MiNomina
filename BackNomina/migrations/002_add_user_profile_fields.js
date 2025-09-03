@@ -76,6 +76,7 @@ async function down() {
 }
 
 module.exports = {
+  name: '002_add_user_profile_fields',
   up,
   down,
   description: 'Add user profile fields'

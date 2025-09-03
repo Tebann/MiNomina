@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./config/swagger');
 const { errorHandler } = require('./middlewares/errorMiddleware');
@@ -20,7 +21,11 @@ const userProfileRoutes = require('./routes/userProfileRoutes');
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -49,44 +54,61 @@ app.use(errorHandler);
 // Puerto
 const PORT = process.env.PORT || 3000;
 
-// Probar conexión, aplicar migraciones y sincronizar modelos con la base de datos
-testConnection().then(async connected => {
-  if (connected) {
-    try {
-      // Cargar y ejecutar migraciones
-      console.log('Ejecutando migraciones...');
-      const migrations = [
-        require('./migrations/001_add_isPaid_to_expenses'),
-        require('./migrations/002_add_user_profile_fields')
-      ];
-      
-      try {
-        await applyPendingMigrations(migrations);
-        console.log('Migraciones completadas');
-      } catch (migrationError) {
-        console.warn('Advertencia: Hubo errores durante las migraciones, pero continuaremos con la inicialización:', migrationError.message);
-      }
-      
-      // Sincronizar modelos
-      try {
-        await syncModels();
-      } catch (syncError) {
-        console.warn('Advertencia: Error al sincronizar modelos, pero continuaremos con la inicialización:', syncError.message);
-      }
-      
-      // Iniciar servidor
-      app.listen(PORT, () => {
-        console.log(`Servidor ejecutándose en el puerto ${PORT}`);
-        console.log(`Documentación API: http://localhost:${PORT}/api-docs`);
-      });
-    } catch (error) {
-      console.error('Error crítico durante la inicialización:', error);
+// Función para cargar todas las migraciones disponibles
+const loadMigrations = () => {
+  const migrationsDir = path.join(__dirname, './migrations');
+  console.log('Loading migrations from:', migrationsDir);
+  const migrationFiles = fs.readdirSync(migrationsDir)
+    .filter(file => 
+      file.endsWith('.js') && 
+      file !== 'migrationManager.js' && 
+      file !== 'runMigrations.js'
+    )
+    .sort(); // Ordenar alfabéticamente para asegurar el orden correcto
+  
+  console.log('Found migration files:', migrationFiles);
+
+  return migrationFiles.map(file => {
+    const migrationPath = path.join(migrationsDir, file);
+    console.log('Loading migration:', migrationPath);
+    const migration = require(migrationPath);
+    console.log('Loaded migration object:', migration);
+    return migration;
+  });
+};
+
+// Probar conexión, sincronizar modelos, aplicar migraciones e iniciar servidor
+const startServer = async () => {
+  try {
+    // 1. Probar conexión a la base de datos
+    const connected = await testConnection();
+    if (!connected) {
+      console.error('No se pudo conectar a la base de datos. Cerrando aplicación.');
       process.exit(1);
     }
-  } else {
-    console.error('No se pudo conectar a la base de datos. Cerrando aplicación.');
+
+    // 2. Sincronizar modelos
+    await syncModels();
+
+    // 3. Cargar y aplicar migraciones
+    console.log('Iniciando proceso de migraciones...');
+    const migrations = loadMigrations();
+    console.log(`Se encontraron ${migrations.length} migraciones disponibles.`);
+    await applyPendingMigrations(migrations);
+    console.log('Proceso de migraciones completado.');
+
+    // 4. Iniciar servidor
+    app.listen(PORT, () => {
+      console.log(`Servidor ejecutándose en el puerto ${PORT}`);
+      console.log(`Documentación API: http://localhost:${PORT}/api-docs`);
+    });
+
+  } catch (error) {
+    console.error('Error crítico durante la inicialización del servidor:', error);
     process.exit(1);
   }
-});
+};
+
+startServer();
 
 module.exports = app;

@@ -12,13 +12,13 @@ const ensureDataDir = () => {
 };
 
 // Sincronizar modelos con la base de datos
-const syncModels = async (force = false) => {
+const syncModels = async () => {
   try {
     // Asegurar que el directorio de datos exista
     ensureDataDir();
     
     // Sincronizar modelos
-    await sequelize.sync({ force });
+    await sequelize.sync();
     console.log('Base de datos sincronizada correctamente');
     return true;
   } catch (error) {
